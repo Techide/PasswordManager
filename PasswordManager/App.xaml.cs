@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using PasswordManager.Data.EF;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,6 +29,9 @@ namespace PasswordManager {
         public App() {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            using (var db = new PasswordManagerContext()) {
+                db.Database.Migrate();
+            }
         }
 
         /// <summary>
