@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PasswordManager.Data.EF;
+using PasswordManager.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,8 +28,8 @@ namespace PasswordManager {
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App() {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
             using (var db = new PasswordManagerContext()) {
                 db.Database.Migrate();
             }
@@ -67,6 +68,9 @@ namespace PasswordManager {
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
+            }
+            if (string.IsNullOrWhiteSpace(SettingsProvider.Password)) {
+                Exit();
             }
         }
 
