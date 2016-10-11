@@ -3,6 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PasswordManager"
-    RequestedTheme="Light">
-
+    xmlns:vm="using:PasswordManager.Logic"
+    RequestedTheme="Dark">
+    <Application.Resources>
+        <vm:ViewModelLocator x:Key="ViewModelLocator" />
+    </Application.Resources>
 </Application>
