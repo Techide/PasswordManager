@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PasswordManager.Data.EF;
+using PasswordManager.Data.EF.Entities;
 using PasswordManager.Util;
+using PasswordManager.Util.Crypto;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,6 +34,28 @@ namespace PasswordManager {
             Suspending += OnSuspending;
             using (var db = new PasswordManagerContext()) {
                 db.Database.Migrate();
+                var profiles = db.Profiles;
+                if (!profiles.Any()) {
+                    var pe = Cryptographer.Encrypt("mooh");
+                    profiles.Add(new Profile {
+                        Name = "Google",
+                        Account = "techide@gmail.com",
+                        Password = pe.EncryptedPassword,
+                        IV = pe.IV,
+                        Salt = pe.Salt,
+                        Key = pe.Key
+                    });
+                    pe = Cryptographer.Encrypt("testo");
+                    profiles.Add(new Profile {
+                        Name = "Hotmail",
+                        Account = "techide@hotmail.com",
+                        Password = pe.EncryptedPassword,
+                        IV = pe.IV,
+                        Salt = pe.Salt,
+                        Key = pe.Key
+                    });
+                    db.SaveChanges();
+                }
             }
         }
 

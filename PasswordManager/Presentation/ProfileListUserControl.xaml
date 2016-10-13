@@ -7,6 +7,8 @@
              mc:Ignorable="d">
 
     <Grid Background="DimGray">
+        <ListBox ItemsSource="{Binding Profiles}">
 
+        </ListBox>
     </Grid>
 </UserControl>

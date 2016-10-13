@@ -1,4 +1,8 @@
-﻿using PasswordManager.Presentation;
+﻿using PasswordManager.BE;
+using PasswordManager.Data.EF.Entities;
+using PasswordManager.Data.Queries;
+using PasswordManager.Data.Queries.Profile.GetAllProfiles;
+using PasswordManager.Presentation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,11 +11,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PasswordManager.Logic.Profile {
-    public class ProfileListViewModel {
+    public class ProfileListViewModel : IViewModel<ProfileListUserControl> {
 
-        public ProfileListViewModel() {
+        private IQueryHandler<GetAllProfilesQuery, List<ProfileListItemEntity>> _handler;
+
+        public ProfileListViewModel(IQueryHandler<GetAllProfilesQuery, List<ProfileListItemEntity>> handler) {
             Debug.WriteLine("[Instantiated] ProfileListViewModel");
+            var profiles = new GetAllProfilesQuery();
+            _handler = handler;
+            //var test = _handler.Execute(profiles);
+            //var stop = true;
         }
+
+        public List<ProfileListItemEntity> Profiles { get { return _handler.Execute(new GetAllProfilesQuery()); } }
 
     }
 }
