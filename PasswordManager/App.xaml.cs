@@ -42,8 +42,7 @@ namespace PasswordManager {
                         Account = "techide@gmail.com",
                         Password = pe.EncryptedPassword,
                         IV = pe.IV,
-                        Salt = pe.Salt,
-                        Key = pe.Key
+                        Salt = pe.Salt
                     });
                     pe = Cryptographer.Encrypt("testo");
                     profiles.Add(new Profile {
@@ -51,8 +50,7 @@ namespace PasswordManager {
                         Account = "techide@hotmail.com",
                         Password = pe.EncryptedPassword,
                         IV = pe.IV,
-                        Salt = pe.Salt,
-                        Key = pe.Key
+                        Salt = pe.Salt
                     });
                     db.SaveChanges();
                 }

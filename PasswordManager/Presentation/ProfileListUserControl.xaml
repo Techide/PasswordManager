@@ -7,7 +7,8 @@
              mc:Ignorable="d">
 
     <Grid Background="DimGray">
-        <ListBox ItemsSource="{Binding Profiles}">
+        <ListBox ItemsSource="{Binding Profiles}"
+                 DisplayMemberPath="Name">
 
         </ListBox>
     </Grid>

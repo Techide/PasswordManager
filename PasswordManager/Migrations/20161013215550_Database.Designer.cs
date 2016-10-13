@@ -8,7 +8,7 @@ using PasswordManager.Data.EF;
 namespace PasswordManager.Migrations
 {
     [DbContext(typeof(PasswordManagerContext))]
-    [Migration("20161011213235_Database")]
+    [Migration("20161013215550_Database")]
     partial class Database
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,9 +25,6 @@ namespace PasswordManager.Migrations
                         .IsRequired();
 
                     b.Property<byte[]>("IV")
-                        .IsRequired();
-
-                    b.Property<byte[]>("Key")
                         .IsRequired();
 
                     b.Property<string>("Name")

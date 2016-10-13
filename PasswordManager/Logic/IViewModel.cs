@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
 namespace PasswordManager.Logic {
-    public interface IViewModel<TModel> where TModel : UserControl {
+    public interface IViewModel<T> where T : IViewModel<T> {
     }
 }

@@ -1,4 +1,5 @@
 ﻿using PasswordManager.Logic;
+using PasswordManager.Logic.Profile;
 using PasswordManager.Presentation;
 using System;
 using System.Collections.Generic;
@@ -7,13 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PasswordManager {
-    public class MainPageViewModel : IPageViewModel<MainPage> {
+    public class MainPageViewModel : IViewModel<MainPageViewModel> {
 
-        public MainPageViewModel(IViewModel<ProfileListUserControl> userList) {
+        public MainPageViewModel(IViewModel<ProfileListViewModel> userList) {
             ProfileListViewModel = userList;
         }
 
-        public IViewModel<ProfileListUserControl> ProfileListViewModel { get; private set; }
+        public IViewModel<ProfileListViewModel> ProfileListViewModel { get; private set; }
 
     }
 }

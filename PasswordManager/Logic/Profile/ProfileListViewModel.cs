@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PasswordManager.Logic.Profile {
-    public class ProfileListViewModel : IViewModel<ProfileListUserControl> {
+    public class ProfileListViewModel : IViewModel<ProfileListViewModel> {
 
         private IQueryHandler<GetAllProfilesQuery, List<ProfileListItemEntity>> _handler;
 
@@ -19,8 +19,6 @@ namespace PasswordManager.Logic.Profile {
             Debug.WriteLine("[Instantiated] ProfileListViewModel");
             var profiles = new GetAllProfilesQuery();
             _handler = handler;
-            //var test = _handler.Execute(profiles);
-            //var stop = true;
         }
 
         public List<ProfileListItemEntity> Profiles { get { return _handler.Execute(new GetAllProfilesQuery()); } }

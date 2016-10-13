@@ -10,8 +10,6 @@ namespace PasswordManager.Data.EF.Entities {
         [Required]
         public byte[] Password { get; set; }
         [Required]
-        public byte[] Key { get; set; }
-        [Required]
         public byte[] IV { get; set; }
         [Required]
         public byte[] Salt { get; set; }

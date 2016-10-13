@@ -26,9 +26,6 @@ namespace PasswordManager.Migrations
                     b.Property<byte[]>("IV")
                         .IsRequired();
 
-                    b.Property<byte[]>("Key")
-                        .IsRequired();
-
                     b.Property<string>("Name")
                         .IsRequired();
 

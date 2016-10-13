@@ -16,7 +16,6 @@ namespace PasswordManager.Migrations
                         .Annotation("Autoincrement", true),
                     Account = table.Column<string>(nullable: false),
                     IV = table.Column<byte[]>(nullable: false),
-                    Key = table.Column<byte[]>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Password = table.Column<byte[]>(nullable: false),
                     Salt = table.Column<byte[]>(nullable: false)
