@@ -6,7 +6,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d"
-      DataContext="{Binding MainPage, Source= StaticResource ViewModelLocator}">
+      DataContext="{Binding MainPage, Source= {StaticResource ViewModelLocator}}">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
@@ -14,7 +14,7 @@
             <ColumnDefinition Width="1" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        <uc:ProfileListUserControl DataContext="{Binding ProfileList}" />
+        <uc:ProfileListUserControl DataContext="{Binding ProfileListViewModel, Source={StaticResource ViewModelLocator}}" />
     </Grid>
 
 </Page>

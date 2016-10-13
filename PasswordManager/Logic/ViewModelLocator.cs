@@ -1,29 +1,24 @@
 ﻿using PasswordManager.Logic.Profile;
-using PasswordManager.Presentation;
 using SimpleInjector;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PasswordManager.Logic {
     public class ViewModelLocator {
         private static Container _ioc;
 
         public ViewModelLocator() {
+            _ioc = new Container();
             Bootstrap();
         }
 
-        public ProfileListViewModel ProfileList { get { return _ioc.GetInstance<ProfileListViewModel>(); } }
+        public MainPageViewModel MainPage { get { return _ioc.GetInstance<MainPageViewModel>(); } }
+
+        public ProfileListViewModel ProfileListViewModel { get { return _ioc.GetInstance<ProfileListViewModel>(); } }
 
         private static void Bootstrap() {
-            var container = new Container();
-
-            container.Register(typeof(IViewModel<>), new[] { typeof(IViewModel<>).GetTypeInfo().Assembly });
-
-            _ioc = container;
+            //_ioc.Register(typeof(IViewModel<>), new[] { typeof(IViewModel<>).GetTypeInfo().Assembly });
+            _ioc.Register<MainPageViewModel>();
+            _ioc.Register<ProfileListViewModel>();
 
         }
     }
