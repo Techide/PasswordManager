@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PasswordManager.Util.MVVM;
 
 namespace PasswordManager.BE {
-    public class ProfileListItemEntity {
-        public int Id { get; set; }
+    public class ProfileListItemEntity : ABindableBase {
+        private int _id;
+        public int Id { get { return _id; } set { Set(ref _id, value); } }
         public string Name { get; set; }
     }
 }

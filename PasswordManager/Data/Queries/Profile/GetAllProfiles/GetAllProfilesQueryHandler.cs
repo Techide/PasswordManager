@@ -1,10 +1,7 @@
 ﻿using PasswordManager.BE;
 using PasswordManager.Data.EF;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PasswordManager.Data.Queries.Profile.GetAllProfiles {
     public class GetAllProfilesQueryHandler : IQueryHandler<GetAllProfilesQuery, List<ProfileListItemEntity>> {

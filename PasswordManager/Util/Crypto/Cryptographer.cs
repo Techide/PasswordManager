@@ -9,14 +9,14 @@ namespace PasswordManager.Util.Crypto {
         public static CryptoPassword Encrypt(string password) {
             CryptoPassword result;
             using (var aes = Aes.Create()) {
-                var passwordObject = new CryptoPassword();
+                var cp = new CryptoPassword();
                 aes.GenerateIV();
-                passwordObject.Salt = CreateSalt(256);
-                aes.Key = CreateKey(passwordObject);
-                passwordObject.IV = aes.IV;
-                passwordObject.Key = aes.Key;
-                passwordObject.EncryptedPassword = EncryptPassword(password, passwordObject.IV, passwordObject.Key, passwordObject.Salt);
-                result = passwordObject;
+                cp.Salt = CreateSalt(256);
+                aes.Key = CreateKey(cp);
+                cp.IV = aes.IV;
+                cp.PrivateKey = aes.Key;
+                cp.EncryptedPassword = EncryptPassword(password, cp.IV, cp.PrivateKey, cp.Salt);
+                result = cp;
             }
             return result;
         }
@@ -46,22 +46,6 @@ namespace PasswordManager.Util.Crypto {
             return result;
         }
 
-        private static byte[] CreateKey(CryptoPassword cp) {
-            var key = SettingsProvider.Password;
-            var bytes = new Rfc2898DeriveBytes(key, cp.Salt, 4096);
-            return bytes.GetBytes(32);
-        }
-
-        private static byte[] CreateSalt(int size) {
-            var result = Array.Empty<byte>();
-            using (var rng = RandomNumberGenerator.Create()) {
-                byte[] array = new byte[size];
-                rng.GetBytes(array);
-                result = array;
-            }
-            return result;
-        }
-
         private static string DecryptPassword(CryptoPassword cp) {
             string result;
             using (var aes = Aes.Create()) {
@@ -76,6 +60,22 @@ namespace PasswordManager.Util.Crypto {
                         }
                     }
                 }
+            }
+            return result;
+        }
+
+        private static byte[] CreateKey(CryptoPassword cp) {
+            var key = cp.PublicKey;
+            var bytes = new Rfc2898DeriveBytes(key, cp.Salt, 4096);
+            return bytes.GetBytes(32);
+        }
+
+        private static byte[] CreateSalt(int size) {
+            var result = Array.Empty<byte>();
+            using (var rng = RandomNumberGenerator.Create()) {
+                byte[] array = new byte[size];
+                rng.GetBytes(array);
+                result = array;
             }
             return result;
         }

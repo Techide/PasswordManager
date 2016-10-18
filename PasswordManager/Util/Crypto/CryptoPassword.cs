@@ -10,7 +10,7 @@
             set;
         }
 
-        public byte[] Key {
+        public byte[] PrivateKey {
             get;
             set;
         }
@@ -19,5 +19,8 @@
             get;
             set;
         }
+
+        public string PublicKey { get; set; }
+
     }
 }

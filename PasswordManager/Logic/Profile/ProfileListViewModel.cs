@@ -1,51 +1,46 @@
 ﻿using PasswordManager.BE;
-using PasswordManager.Data.EF.Entities;
 using PasswordManager.Data.Queries;
 using PasswordManager.Data.Queries.Profile.GetAllProfiles;
-using PasswordManager.Presentation;
-using System;
+using PasswordManager.Data.Queries.Profile.GetProfileDetail;
+using PasswordManager.Util.MVVM;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PasswordManager.Logic.Profile {
-    public class ProfileListViewModel : IViewModel<ProfileListViewModel>, INotifyPropertyChanged {
+    public class ProfileListViewModel : ABindableBase, IViewModel<ProfileListViewModel> {
 
-        private IQueryHandler<GetAllProfilesQuery, List<ProfileListItemEntity>> _handler;
+        private IQueryHandler<GetAllProfilesQuery, List<ProfileListItemEntity>> _getAllProfilesHandler;
         private ProfileListItemEntity _selectedItem;
+        private ObservableCollection<ProfileListItemEntity> _profiles;
+        private IQueryHandler<GetProfileDetailQuery, GetProfileDetailResult> _getProfileDetailHandler;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        //private GetProfileDetailResult _currentProfile;
 
-        public ProfileListViewModel(IQueryHandler<GetAllProfilesQuery, List<ProfileListItemEntity>> handler) {
+        public ProfileListViewModel(
+            IQueryHandler<GetAllProfilesQuery, List<ProfileListItemEntity>> getAllProfilesHandler,
+            IQueryHandler<GetProfileDetailQuery, GetProfileDetailResult> getProfileDetailHandler
+            ) {
             Debug.WriteLine("[Instantiated] ProfileListViewModel");
-            _handler = handler;
-            PropertyChanged += ProfileListViewModel_PropertyChanged;
+            _getAllProfilesHandler = getAllProfilesHandler;
+            _getProfileDetailHandler = getProfileDetailHandler;
+            _profiles = new ObservableCollection<ProfileListItemEntity>(_getAllProfilesHandler.Execute(new GetAllProfilesQuery()));
         }
 
-        private void ProfileListViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e) {
-            if (sender is ProfileListItemEntity) {
-                var item = (ProfileListItemEntity)sender;
-                Debug.WriteLine("Should query for profile with Id: " + item.Id);
-            }
-        }
-
-        public List<ProfileListItemEntity> Profiles { get { return _handler.Execute(new GetAllProfilesQuery()); } }
+        public ObservableCollection<ProfileListItemEntity> Profiles { get { return _profiles; } set { Set(ref _profiles, value); } }
 
         public ProfileListItemEntity SelectedListItem {
             get { return _selectedItem; }
-            set {
-                if (_selectedItem != value) {
-                    _selectedItem = value;
-                    OnPropertyChanged(value);
-                }
-            }
+            set { Set(ref _selectedItem, value); }
         }
 
-        private void OnPropertyChanged(ProfileListItemEntity item) {
-            PropertyChanged?.Invoke(item, new PropertyChangedEventArgs("SelectedListItem"));
+        public GetProfileDetailResult ProfileDetail {
+            get {
+                if (_selectedItem == null) {
+                    return null;
+                }
+                return _getProfileDetailHandler.Execute(new GetProfileDetailQuery { ProfileId = _selectedItem.Id });
+            }
         }
     }
 }

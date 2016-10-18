@@ -1,5 +1,4 @@
 ﻿using PasswordManager.Data.Queries;
-using PasswordManager.Logic.Profile;
 using SimpleInjector;
 using System.Reflection;
 
