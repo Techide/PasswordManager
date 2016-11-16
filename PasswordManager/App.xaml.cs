@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PasswordManager.Data.EF;
 using PasswordManager.Data.EF.Entities;
+using PasswordManager.Presentation.Main;
 using PasswordManager.Util;
 using PasswordManager.Util.Crypto;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -83,6 +85,7 @@ namespace PasswordManager {
                 Window.Current.Activate();
             }
             if (string.IsNullOrWhiteSpace(SettingsProvider.Password)) {
+                Debug.WriteLine("[ERROR] SettingsProvider could not locate master password!");
                 Exit();
             }
         }

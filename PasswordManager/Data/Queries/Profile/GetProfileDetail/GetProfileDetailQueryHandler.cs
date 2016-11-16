@@ -18,7 +18,8 @@ namespace PasswordManager.Data.Queries.Profile.GetProfileDetail {
                     var pwd = GetDecryptedPassword(p);
                     result = new GetProfileDetailResult {
                         Account = p.Account,
-                        Password = null
+                        Password = pwd,
+                        Id = p.Id
                     };
                 }
             }

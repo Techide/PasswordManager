@@ -3,7 +3,6 @@
 namespace PasswordManager.Data.Queries.Profile.GetProfileDetail {
     public class GetProfileDetailResult : ABindableBase {
 
-
         private int _id;
 
         private string _account;

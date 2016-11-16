@@ -1,5 +1,7 @@
 ﻿using PasswordManager.Data.Queries;
+using PasswordManager.Logic.Main;
 using SimpleInjector;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace PasswordManager.Logic {
@@ -9,9 +11,10 @@ namespace PasswordManager.Logic {
         public ViewModelLocator() {
             _ioc = new Container();
             Bootstrap();
+            Debug.WriteLine("[Instantiated] ViewModelLocator");
         }
 
-        public MainPageViewModel MainPage { get { return _ioc.GetInstance<MainPageViewModel>(); } }
+        public IViewModel<MainPageViewModel> MainPage { get { return _ioc.GetInstance<IViewModel<MainPageViewModel>>(); } }
 
         private static void Bootstrap() {
             _ioc.Register(typeof(IViewModel<>), new[] { typeof(IViewModel<>).GetTypeInfo().Assembly });

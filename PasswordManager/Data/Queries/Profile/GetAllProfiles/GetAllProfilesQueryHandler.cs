@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace PasswordManager.Data.Queries.Profile.GetAllProfiles {
-    public class GetAllProfilesQueryHandler : IQueryHandler<GetAllProfilesQuery, List<ProfileListItemEntity>> {
+    public class GetAllProfilesQueryHandler : IQueryHandler<GetAllProfilesQuery, GetAllProfilesResult> {
 
-        public List<ProfileListItemEntity> Execute(GetAllProfilesQuery query) {
-            var result = new List<ProfileListItemEntity>();
+        public GetAllProfilesResult Execute(GetAllProfilesQuery query) {
+            //var result = new List<ProfileListItemEntity>();
+            var result = new GetAllProfilesResult();
             using (var db = new PasswordManagerContext()) {
-                result.AddRange(db.Profiles.Select(x => new ProfileListItemEntity {
+                result.Profiles.AddRange(db.Profiles.Select(x => new ProfileListItemEntity {
                     Id = x.Id,
                     Name = x.Name
                 }));
