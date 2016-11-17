@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace PasswordManager.Util {
@@ -7,10 +8,12 @@ namespace PasswordManager.Util {
 
         private static string _password;
 
-#if DEBUG
+        static SettingsProvider() {
+            _password = GetPassword().Result;
+        }
+
         internal static string Password {
             get {
-                GetPassword();
                 return _password;
             }
             private set {
@@ -18,7 +21,8 @@ namespace PasswordManager.Util {
             }
         }
 
-        private static async void GetPassword() {
+#if DEBUG
+        private static async Task<string> GetPassword() {
             var result = string.Empty;
             var localFolder = ApplicationData.Current.LocalFolder;
             var name = "dev.txt";
@@ -29,18 +33,9 @@ namespace PasswordManager.Util {
             catch (Exception ex) {
                 Debug.WriteLine(ex);
             }
-        }
-#else
-        internal static string Password {
-            get {
-                return _password;
-            }
-            set {
-                _password = value;
-            }
+            return _password;
         }
 #endif
-
 
     }
 }

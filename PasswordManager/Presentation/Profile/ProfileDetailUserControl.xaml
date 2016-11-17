@@ -1,19 +1,54 @@
-﻿<UserControl
-    x:Class="PasswordManager.Presentation.Profile.ProfileDetailUserControl"
+﻿<UserControl x:Class="PasswordManager.Presentation.Profile.ProfileDetailUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:PasswordManager.Presentation"
-             xmlns:viewModels="using:PasswordManager.Logic.Profile"
+             xmlns:logic="using:PasswordManager.Logic.Profile"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignHeight="60"
+             d:DataContext="{d:DesignInstance logic:ProfileDetailViewModel }"
+             d:DesignHeight="80"
              d:DesignWidth="300">
 
+    <UserControl.Resources>
+        <Image x:Key="a"
+               Source="ms-appx:///Assets/Copy32.png" />
+        <Thickness x:Key="TextboxMargin">3,3,3,0</Thickness>
+        <Thickness x:Key="ButtonMargin">0,3,3,0</Thickness>
+    </UserControl.Resources>
+
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
         <StackPanel>
-            <TextBox Text="{Binding Account}" />
-            <TextBox Text="{Binding Password}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox Text="{Binding ProfileDetail.Account}"
+                         Margin="{StaticResource TextboxMargin}" />
+                <Button Grid.Column="1"
+                        Margin="{StaticResource ButtonMargin}"
+                        Command="{Binding CopyAccountCommand}"
+                        ToolTipService.ToolTip="Copy Account to clipboard">
+                    Clipboard
+                </Button>
+            </Grid>
+            <Grid Margin="0,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox Text="{Binding ProfileDetail.Password}"
+                         Margin="{StaticResource TextboxMargin}" />
+                <Button Grid.Column="1"
+                        Margin="{StaticResource ButtonMargin}"
+                        ToolTipService.ToolTip="Copy Account to clipboard">
+                    Clipboard
+                </Button>
+            </Grid>
+
         </StackPanel>
     </Grid>
 </UserControl>
