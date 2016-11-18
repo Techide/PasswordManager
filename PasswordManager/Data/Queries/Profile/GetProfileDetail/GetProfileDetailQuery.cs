@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PasswordManager.Data.Queries.Profile.GetProfileDetail {
-    public class GetProfileDetailQuery : IQuery<GetProfileDetailResult> {
+    public class GetProfileDetailQuery : ISeparatedQuery<GetProfileDetailResult> {
         public int ProfileId { get; set; }
     }
 }

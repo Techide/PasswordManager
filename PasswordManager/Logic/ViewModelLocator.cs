@@ -1,4 +1,5 @@
-﻿using PasswordManager.Data.Queries;
+﻿using PasswordManager.Data.Commands;
+using PasswordManager.Data.Queries;
 using PasswordManager.Logic.Main;
 using SimpleInjector;
 using System.Diagnostics;
@@ -18,8 +19,11 @@ namespace PasswordManager.Logic {
 
         private static void Bootstrap() {
             _ioc.Register(typeof(IViewModel<>), new[] { typeof(IViewModel<>).GetTypeInfo().Assembly });
-            _ioc.Register(typeof(IQuery<>), new[] { typeof(IQuery<>).GetTypeInfo().Assembly });
-            _ioc.Register(typeof(IQueryHandler<,>), new[] { typeof(IQueryHandler<,>).GetTypeInfo().Assembly });
+            _ioc.Register(typeof(ISeparatedQuery<>), new[] { typeof(ISeparatedQuery<>).GetTypeInfo().Assembly });
+            _ioc.Register(typeof(ISeparatedQueryHandler<,>), new[] { typeof(ISeparatedQueryHandler<,>).GetTypeInfo().Assembly });
+
+            _ioc.RegisterCollection(typeof(ISeparatedCommand), new[] { typeof(ISeparatedCommand).GetTypeInfo().Assembly });
+            _ioc.Register(typeof(ISeparatedCommandHandler<>), new[] { typeof(ISeparatedCommandHandler<>).GetTypeInfo().Assembly });
         }
     }
 }

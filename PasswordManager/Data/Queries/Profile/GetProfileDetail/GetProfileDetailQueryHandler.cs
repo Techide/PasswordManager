@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PasswordManager.Data.Queries.Profile.GetProfileDetail {
 
-    public class GetProfileDetailQueryHandler : IQueryHandler<GetProfileDetailQuery, GetProfileDetailResult> {
+    public class GetProfileDetailQueryHandler : ISeparatedQueryHandler<GetProfileDetailQuery, GetProfileDetailResult> {
 
         public GetProfileDetailResult Execute(GetProfileDetailQuery query) {
             GetProfileDetailResult result = null;

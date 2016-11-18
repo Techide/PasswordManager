@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace PasswordManager.Data.Queries.Profile.GetAllProfiles {
-    public class GetAllProfilesQueryHandler : IQueryHandler<GetAllProfilesQuery, GetAllProfilesResult> {
+    public class GetAllProfilesQueryHandler : ISeparatedQueryHandler<GetAllProfilesQuery, GetAllProfilesResult> {
 
         public GetAllProfilesResult Execute(GetAllProfilesQuery query) {
             //var result = new List<ProfileListItemEntity>();
