@@ -1,7 +1,7 @@
 ﻿using PasswordManager.Util.MVVM;
 
 namespace PasswordManager.Data.Queries.Profile.GetProfileDetail {
-    public class GetProfileDetailResult : ABindableBase {
+    public class GetProfileDetailResult {
 
         private int _id;
 

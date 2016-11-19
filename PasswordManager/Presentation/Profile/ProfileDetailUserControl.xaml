@@ -6,49 +6,90 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance logic:ProfileDetailViewModel }"
-             d:DesignHeight="80"
+             d:DesignHeight="120"
              d:DesignWidth="300">
 
     <UserControl.Resources>
         <Image x:Key="a"
                Source="ms-appx:///Assets/Copy32.png" />
-        <Thickness x:Key="TextboxMargin">3,3,3,0</Thickness>
-        <Thickness x:Key="ButtonMargin">0,3,3,0</Thickness>
+        <Thickness x:Key="TextboxMargin">6,3,3,3</Thickness>
+        <Thickness x:Key="StackPanelPadding">0,0,0,3</Thickness>
+        <Thickness x:Key="ButtonMargin">0,3,3,3</Thickness>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Background="{ThemeResource AppBarBackground}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <TextBox Text="{Binding AccountDetail}"
-                         Margin="{StaticResource TextboxMargin}" />
-                <Button Grid.Column="1"
-                        Margin="{StaticResource ButtonMargin}"
-                        Command="{Binding CopyAccountCommand}"
-                        ToolTipService.ToolTip="Copy Account to clipboard">
-                    Clipboard
-                </Button>
-            </Grid>
-            <Grid Margin="0,0,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <TextBox Text="{Binding PasswordDetail}"
-                         Margin="{StaticResource TextboxMargin}" />
-                <Button Grid.Column="1"
-                        Margin="{StaticResource ButtonMargin}"
-                        ToolTipService.ToolTip="Copy Account to clipboard">
-                    Clipboard
-                </Button>
-            </Grid>
 
-        </StackPanel>
+        <Border BorderBrush="{ThemeResource SystemListMediumColor}"
+                BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Border Background="{ThemeResource SystemChromeDisabledHighColor}">
+                    <TextBlock Text="Details" />
+                </Border>
+                <StackPanel Grid.Row="1"
+                            BorderThickness="0"
+                            Padding="1">
+                    <Border BorderThickness="1">
+                        <Grid Background="{ThemeResource SystemControlBackgroundListMediumBrush}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="Account:"
+                                           Foreground="{ThemeResource TextBoxForegroundThemeBrush}"
+                                           Padding="6,0,0,0"
+                                           Margin="0" />
+                                <TextBlock Text="{Binding AccountDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Foreground="{ThemeResource TextBoxForegroundHeaderThemeBrush}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Stretch"
+                                           Margin="{StaticResource TextboxMargin}" />
+                            </StackPanel>
+                            <Button Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Margin="{StaticResource ButtonMargin}"
+                                    Command="{Binding CopyAccountCommand}"
+                                    ToolTipService.ToolTip="Copy to clipboard">
+                                Clipboard
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <Border BorderThickness="1">
+                        <Grid Background="{ThemeResource SystemControlBackgroundListMediumBrush}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="Password:"
+                                           Padding="6,0,0,0"
+                                           Foreground="{ThemeResource TextBoxForegroundThemeBrush}"
+                                           Margin="0" />
+                                <TextBlock Text="{Binding PasswordDetail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Foreground="{ThemeResource TextBoxForegroundHeaderThemeBrush}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="{StaticResource TextboxMargin}" />
+                            </StackPanel>
+                            <Button Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Margin="{StaticResource ButtonMargin}"
+                                    Command="{Binding CopyPasswordCommand}"
+                                    ToolTipService.ToolTip="Copy to clipboard">
+                                Clipboard
+                            </Button>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+
     </Grid>
 </UserControl>

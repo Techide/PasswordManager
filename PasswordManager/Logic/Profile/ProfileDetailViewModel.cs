@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace PasswordManager.Logic.Profile {
     public class ProfileDetailViewModel : ABindableBase, IViewModel<ProfileDetailViewModel> {
@@ -46,6 +47,9 @@ namespace PasswordManager.Logic.Profile {
             PasswordDetail = _profileDetail.Password;
         }
 
+        #endregion // Public
+
+
         #region Commands
 
         #region CopyAccountCommand
@@ -56,7 +60,7 @@ namespace PasswordManager.Logic.Profile {
         }
 
         private void CopyAccountCommand_Execute(object parameter) {
-            Debug.WriteLine(_accountDetail);
+            CopyToClipboard(_accountDetail);
         }
         #endregion //CopyAccountCommand
 
@@ -68,12 +72,45 @@ namespace PasswordManager.Logic.Profile {
         }
 
         private void CopyPasswordCommand_Execute(object parameter) {
-            Debug.WriteLine(_passwordDetail);
+            CopyToClipboard(_passwordDetail);
         }
         #endregion //CopyPasswordCommand
 
         #endregion //Commands
 
-        #endregion // Public
+        #region Private
+
+        private void CopyToClipboard(string text) {
+            try {
+                var content = Clipboard.GetContent();
+
+                if (ShouldCommitToClipboard(text, content)) {
+                    var pck = new DataPackage();
+                    pck.RequestedOperation = DataPackageOperation.Copy;
+                    pck.SetText(text);
+                    Clipboard.SetContent(pck);
+                }
+            }
+            catch (Exception ex) {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private bool ShouldCommitToClipboard(string text, DataPackageView content) {
+            if (content.Contains(StandardDataFormats.Text)) {
+                var contentTask = content.GetTextAsync().AsTask();
+                var contentText = contentTask.Result;
+                if (!text.Equals(contentTask)) {
+                    Clipboard.Clear();
+                    return true;
+                }
+            }
+            else {
+                return true;
+            }
+            return false;
+        }
+        
+        #endregion //Private
     }
 }

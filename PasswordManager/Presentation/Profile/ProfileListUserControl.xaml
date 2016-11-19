@@ -10,16 +10,39 @@
              d:DesignHeight="450"
              d:DesignWidth="300">
 
-    <Grid Background="DimGray">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
-        <ListBox ItemsSource="{Binding Profiles}"
-                 DisplayMemberPath="Name"
-                 SelectedItem="{Binding SelectedListItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-        </ListBox>
+        <Border BorderBrush="{ThemeResource SystemListMediumColor}"
+                BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Border Background="{ThemeResource SystemChromeDisabledHighColor}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Profiles" />
+                        <Button Grid.Column="1"
+                                Padding="4,0,4,3"
+                                BorderThickness="0"
+                                HorizontalAlignment="Stretch"
+                                Content="+" />
+                    </Grid>
+                </Border>
+                <ListBox ItemsSource="{Binding Profiles}"
+                         Grid.Row="1"
+                         DisplayMemberPath="Name"
+                         SelectedItem="{Binding SelectedListItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+        </Border>
 
         <views:ProfileDetailUserControl Grid.Column="1"
                                         DataContext="{Binding DetailViewModel}" />
