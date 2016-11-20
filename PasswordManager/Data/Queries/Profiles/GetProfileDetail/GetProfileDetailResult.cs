@@ -1,6 +1,6 @@
 ﻿using PasswordManager.Util.MVVM;
 
-namespace PasswordManager.Data.Queries.Profile.GetProfileDetail {
+namespace PasswordManager.Data.Queries.Profiles.GetProfileDetail {
     public class GetProfileDetailResult {
 
         private int _id;

@@ -1,11 +1,11 @@
 ﻿using PasswordManager.Logic.Profile;
 
-namespace PasswordManager.Data.Commands.Profile.UpdateProfileDetail {
-    public class UpdateProfileDetailsCommand : ISeparatedCommand {
+namespace PasswordManager.Data.Commands.Profiles.LoadProfileDetail {
+    public class LoadProfileDetailsCommand : ISeparatedCommand {
         private int _accountId;
         private ProfileDetailViewModel _viewModel;
 
-        public UpdateProfileDetailsCommand(int accountId, ProfileDetailViewModel viewModel) {
+        public LoadProfileDetailsCommand(int accountId, ProfileDetailViewModel viewModel) {
             _accountId = accountId;
             _viewModel = viewModel;
         }

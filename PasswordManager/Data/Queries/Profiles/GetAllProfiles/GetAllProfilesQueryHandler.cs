@@ -3,7 +3,7 @@ using PasswordManager.Data.EF;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PasswordManager.Data.Queries.Profile.GetAllProfiles {
+namespace PasswordManager.Data.Queries.Profiles.GetAllProfiles {
     public class GetAllProfilesQueryHandler : ISeparatedQueryHandler<GetAllProfilesQuery, GetAllProfilesResult> {
 
         public GetAllProfilesResult Execute(GetAllProfilesQuery query) {

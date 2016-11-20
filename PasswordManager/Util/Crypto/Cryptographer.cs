@@ -9,7 +9,7 @@ namespace PasswordManager.Util.Crypto {
         public static CryptoPassword Encrypt(string password) {
             CryptoPassword result;
             using (var aes = Aes.Create()) {
-                var cp = new CryptoPassword();
+                var cp = new CryptoPassword { PublicKey = SettingsProvider.Password };
                 aes.GenerateIV();
                 cp.Salt = CreateSalt(256);
                 aes.Key = CreateKey(cp);

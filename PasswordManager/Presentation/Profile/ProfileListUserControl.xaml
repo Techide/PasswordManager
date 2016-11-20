@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:viewModels="using:PasswordManager.Logic.Profile"
              xmlns:views="using:PasswordManager.Presentation.Profile"
+             xmlns:converters="using:PasswordManager.Util.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
@@ -10,7 +11,11 @@
              d:DesignHeight="450"
              d:DesignWidth="300">
 
-    <Grid>
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="Bool2Vis" />
+    </UserControl.Resources>
+
+    <Grid Background="{ThemeResource AppBarBackground}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="2*" />
@@ -18,34 +23,47 @@
 
         <Border BorderBrush="{ThemeResource SystemListMediumColor}"
                 BorderThickness="1">
-            <Grid>
+            <Grid x:Name="test">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Border Background="{ThemeResource SystemChromeDisabledHighColor}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="auto" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Profiles" />
-                        <Button Grid.Column="1"
-                                Padding="4,0,4,3"
-                                BorderThickness="0"
-                                HorizontalAlignment="Stretch"
-                                Content="+" />
-                    </Grid>
+                <Grid Margin="0,0,0,1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <Border Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
+                        <TextBlock Text="Profiles"
+                                   VerticalAlignment="Center"
+                                   Padding="3,0,0,0" />
+                    </Border>
+                    <Border Grid.Column="1"
+                            Margin="1,0,0,0">
+                        <Button Content="+"
+                                Command="{Binding AddProfileCommand}"
+                                Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center">
+                        </Button>
+                    </Border>
+                </Grid>
+                <Border Grid.Row="1"
+                        BorderThickness="0">
+                    <StackPanel>
+                        <AutoSuggestBox Text="{Binding QueryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        PlaceholderText="Search profiles..." />
+                        <ListBox ItemsSource="{Binding Profiles}"
+                                 DisplayMemberPath="Name"
+                                 Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+                                 SelectedItem="{Binding SelectedListItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
                 </Border>
-                <ListBox ItemsSource="{Binding Profiles}"
-                         Grid.Row="1"
-                         DisplayMemberPath="Name"
-                         SelectedItem="{Binding SelectedListItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
         </Border>
 
-        <views:ProfileDetailUserControl Grid.Column="1"
-                                        DataContext="{Binding DetailViewModel}" />
+        <views:ProfileDetailUserControl DataContext="{Binding DetailViewModel}"
+                                        Grid.Column="1"
+                                        Visibility="{Binding ShowDetails, Converter={StaticResource Bool2Vis}}" />
     </Grid>
-
 </UserControl>

@@ -4,8 +4,8 @@ using PasswordManager.Data.EF.Entities;
 using PasswordManager.Presentation.Main;
 using PasswordManager.Util;
 using PasswordManager.Util.Crypto;
+using Serilog;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -14,39 +14,52 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
 namespace PasswordManager {
+
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
     sealed partial class App : Application {
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App() {
-            InitializeComponent();
-            Suspending += OnSuspending;
-            using (var db = new PasswordManagerContext()) {
-                db.Database.Migrate();
-                var profiles = db.Profiles;
-                if (!profiles.Any()) {
-                    var pe = Cryptographer.Encrypt("mooh");
-                    profiles.Add(new Profile {
-                        Name = "Google",
-                        Account = "techide@gmail.com",
-                        Password = pe.EncryptedPassword,
-                        IV = pe.IV,
-                        Salt = pe.Salt
-                    });
-                    pe = Cryptographer.Encrypt("testo");
-                    profiles.Add(new Profile {
-                        Name = "Hotmail",
-                        Account = "techide@hotmail.com",
-                        Password = pe.EncryptedPassword,
-                        IV = pe.IV,
-                        Salt = pe.Salt
-                    });
-                    db.SaveChanges();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.RollingFile("logs\\log{Date}.log")
+                .CreateLogger();
+
+            if (string.IsNullOrWhiteSpace(SettingsProvider.Password)) {
+                //    Debug.WriteLine("[ERROR] SettingsProvider could not locate master password!");
+                Exit();
+            }
+            else {
+                using (var db = new PasswordManagerContext()) {
+                    db.Database.Migrate();
+                    var profiles = db.Profiles;
+                    if (!profiles.Any()) {
+                        var pe = Cryptographer.Encrypt("mooh");
+                        profiles.Add(new Profile {
+                            Name = "Google",
+                            Account = "techide@gmail.com",
+                            Password = pe.EncryptedPassword,
+                            IV = pe.IV,
+                            Salt = pe.Salt
+                        });
+                        pe = Cryptographer.Encrypt("testo");
+                        profiles.Add(new Profile {
+                            Name = "Hotmail",
+                            Account = "techide@hotmail.com",
+                            Password = pe.EncryptedPassword,
+                            IV = pe.IV,
+                            Salt = pe.Salt
+                        });
+                        db.SaveChanges();
+                    }
                 }
+                InitializeComponent();
+                Suspending += OnSuspending;
             }
         }
 
@@ -84,10 +97,6 @@ namespace PasswordManager {
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
-            if (string.IsNullOrWhiteSpace(SettingsProvider.Password)) {
-                Debug.WriteLine("[ERROR] SettingsProvider could not locate master password!");
-                Exit();
-            }
         }
 
         /// <summary>
@@ -95,7 +104,7 @@ namespace PasswordManager {
         /// </summary>
         /// <param name="sender">The Frame which failed navigation</param>
         /// <param name="e">Details about the navigation failure</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e) {
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e) {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
@@ -108,6 +117,7 @@ namespace PasswordManager {
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e) {
             var deferral = e.SuspendingOperation.GetDeferral();
+
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }

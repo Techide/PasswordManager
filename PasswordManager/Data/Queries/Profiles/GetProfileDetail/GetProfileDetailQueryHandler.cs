@@ -1,27 +1,32 @@
 ﻿using PasswordManager.Data.EF;
 using PasswordManager.Util;
 using PasswordManager.Util.Crypto;
+using System;
+using System.Diagnostics;
 using System.Linq;
 
-namespace PasswordManager.Data.Queries.Profile.GetProfileDetail {
+namespace PasswordManager.Data.Queries.Profiles.GetProfileDetail {
 
     public class GetProfileDetailQueryHandler : ISeparatedQueryHandler<GetProfileDetailQuery, GetProfileDetailResult> {
 
         public GetProfileDetailResult Execute(GetProfileDetailQuery query) {
             GetProfileDetailResult result = null;
-            using (var db = new PasswordManagerContext()) {
-                var p = db.Profiles.SingleOrDefault(x => x.Id == query.ProfileId);
-                if (p == null) {
-                    return null;
+            try {
+                using (var db = new PasswordManagerContext()) {
+                    var p = db.Profiles.SingleOrDefault(x => x.Id == query.ProfileId);
+                    if (p != null) {
+                        var pwd = GetDecryptedPassword(p);
+                        result = new GetProfileDetailResult {
+                            Account = p.Account,
+                            Password = pwd,
+                            Id = p.Id
+                        };
+                    }
                 }
-                else {
-                    var pwd = GetDecryptedPassword(p);
-                    result = new GetProfileDetailResult {
-                        Account = p.Account,
-                        Password = pwd,
-                        Id = p.Id
-                    };
-                }
+            }
+            catch (Exception ex) {
+                Debug.WriteLine(ex.Message);
+                var t = new StackTrace(ex, true);
             }
             return result;
         }
