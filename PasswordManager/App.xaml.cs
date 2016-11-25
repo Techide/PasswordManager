@@ -1,12 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MetroLog;
+using Microsoft.EntityFrameworkCore;
 using PasswordManager.Data.EF;
-using PasswordManager.Data.EF.Entities;
-using PasswordManager.Presentation.Main;
-using PasswordManager.Util;
-using PasswordManager.Util.Crypto;
-using Serilog;
+using PasswordManager.Services.Settings;
+using PasswordManager.Views;
 using System;
-using System.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -19,48 +16,32 @@ namespace PasswordManager {
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
     sealed partial class App : Application {
+        private ILogger Log;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App() {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.RollingFile("logs\\log{Date}.log")
-                .CreateLogger();
+            InitializeComponent();
+            Suspending += OnSuspending;
 
-            if (string.IsNullOrWhiteSpace(SettingsProvider.Password)) {
-                //    Debug.WriteLine("[ERROR] SettingsProvider could not locate master password!");
-                Exit();
+            var target = new MetroLog.Targets.FileStreamingTarget();
+            foreach (var level in (LogLevel[])Enum.GetValues(typeof(LogLevel))) {
+                LogManagerFactory.DefaultConfiguration.AddTarget(level, target);
             }
-            else {
-                using (var db = new PasswordManagerContext()) {
+
+            Log = LogManagerFactory.DefaultLogManager.GetLogger<App>();
+
+            using (var db = new PasswordManagerContext()) {
+                try {
                     db.Database.Migrate();
-                    var profiles = db.Profiles;
-                    if (!profiles.Any()) {
-                        var pe = Cryptographer.Encrypt("mooh");
-                        profiles.Add(new Profile {
-                            Name = "Google",
-                            Account = "techide@gmail.com",
-                            Password = pe.EncryptedPassword,
-                            IV = pe.IV,
-                            Salt = pe.Salt
-                        });
-                        pe = Cryptographer.Encrypt("testo");
-                        profiles.Add(new Profile {
-                            Name = "Hotmail",
-                            Account = "techide@hotmail.com",
-                            Password = pe.EncryptedPassword,
-                            IV = pe.IV,
-                            Salt = pe.Salt
-                        });
-                        db.SaveChanges();
-                    }
                 }
-                InitializeComponent();
-                Suspending += OnSuspending;
+                catch (Exception ex) {
+                    Log.Error(ex.Message, ex);
+                }
             }
+            SettingsService.Initialize();
         }
 
         /// <summary>
@@ -117,7 +98,8 @@ namespace PasswordManager {
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e) {
             var deferral = e.SuspendingOperation.GetDeferral();
-
+            //Log.CloseAndFlush();
+            SettingsService.Password = null;
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }

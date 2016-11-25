@@ -8,9 +8,10 @@ using PasswordManager.Data.EF;
 namespace PasswordManager.Migrations
 {
     [DbContext(typeof(PasswordManagerContext))]
-    partial class PasswordManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20161123171441_Current")]
+    partial class Current
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752");
