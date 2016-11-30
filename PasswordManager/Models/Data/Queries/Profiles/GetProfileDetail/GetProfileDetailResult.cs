@@ -1,17 +1,29 @@
 ﻿using PasswordManager.Util.MVVM;
 
 namespace PasswordManager.Data.Queries.Profiles.GetProfileDetail {
-    public class GetProfileDetailResult {
 
+    public class GetProfileDetailResult {
         private int _id;
 
         private string _account;
 
         private string _password;
 
+        private string _profile;
+
         public int Id {
             get { return _id; }
             set { _id = value; }
+        }
+
+        public string Profile {
+            get {
+                return _profile;
+            }
+
+            set {
+                _profile = value;
+            }
         }
 
         public string Account {

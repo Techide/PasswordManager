@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace PasswordManager.Services.Navigation {
 
-    public interface INavigationService {
+    public interface INavigatable<T> where T : IViewModel {
 
-        void Navigate(Type navigatablePage);
-
-        void Navigate(Type navigatablePage, dynamic context);
-
-        void GoBack();
+        event EventHandler<IEventArgumentWrapper> OnNavigatedTo;
     }
 }

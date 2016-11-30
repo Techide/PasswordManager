@@ -1,6 +1,7 @@
 ﻿using MetroLog;
 using PasswordManager.Data.Queries;
 using PasswordManager.Data.Queries.Profiles.GetProfileDetail;
+using PasswordManager.Models.DTO;
 using PasswordManager.Services.Navigation;
 using PasswordManager.Util.MVVM;
 using System;
@@ -104,7 +105,13 @@ namespace PasswordManager.ViewModels {
         }
 
         public void EditProfileCommand_Execute(object parameter) {
-            NavigationService.Instance.Navigate(typeof(EditProfileViewModel), _profileDetail);
+            var dto = new ProfileDTO {
+                ID = _profileDetail.Id,
+                Profile = _profileDetail.Profile,
+                Account = _profileDetail.Account,
+                Password = _profileDetail.Password
+            };
+            NavigationService.Navigate(typeof(EditProfileViewModel), dto);
         }
 
         #endregion EditProfileCommand

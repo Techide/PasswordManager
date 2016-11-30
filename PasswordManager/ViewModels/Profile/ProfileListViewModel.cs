@@ -88,7 +88,7 @@ namespace PasswordManager.ViewModels {
         public DelegateCommand CreateProfileCommand { get; set; }
 
         private void CreateProfileCommandExecute(object parameter) {
-            NavigationService.Instance.Navigate(typeof(CreateProfileViewModel));
+            NavigationService.Navigate(typeof(CreateProfileViewModel));
         }
 
         #endregion Commands
@@ -97,6 +97,10 @@ namespace PasswordManager.ViewModels {
             var profiles = _getAllProfilesHandler.Execute(new GetAllProfilesQuery()).Profiles;
             Profiles = new ObservableCollection<ProfileListItemEntity>(profiles);
             _profilesCache = new List<ProfileListItemEntity>(profiles);
+            //var arg = NavigationService.GetContext(GetType()) as int?;
+            //if (arg.HasValue) {
+            //    _updateProfileDetailsHandler.Execute(new LoadProfileDetailsCommand(arg.Value, _profileDetailViewModel));
+            //}
         }
     }
 }

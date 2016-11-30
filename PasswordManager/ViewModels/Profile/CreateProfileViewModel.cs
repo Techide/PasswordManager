@@ -58,7 +58,7 @@ namespace PasswordManager.ViewModels {
             };
             try {
                 _createProfileHandler.Execute(command);
-                NavigationService.Instance.GoBack(typeof(MainPageViewModel));
+                NavigationService.GoBack(typeof(MainPageViewModel));
             }
             catch (Exception ex) {
                 Log.Error(ex.Message, ex);
@@ -68,7 +68,7 @@ namespace PasswordManager.ViewModels {
         public DelegateCommand CancelCommand { get; set; }
 
         private void CancelCommandExecuted(object obj) {
-            NavigationService.Instance.GoBack(typeof(MainPageViewModel));
+            NavigationService.GoBack(typeof(MainPageViewModel));
         }
     }
 }

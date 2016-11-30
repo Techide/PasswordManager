@@ -7,65 +7,60 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace PasswordManager.Services.Navigation {
 
-    public sealed class NavigationService : INavigationService {
-        private static volatile NavigationService _me;
+    public static class NavigationService {
         private static object syncRoot = new object();
 
-        private Dictionary<Type, Type> _mapping;
+        private static Dictionary<Type, Type> _mapping;
+        private static Dictionary<Type, dynamic> _viewModelArgumentMapping;
+        private static Frame _frame;
 
-        public static NavigationService Instance {
-            get {
-                if (_me == null) {
-                    lock (syncRoot) {
-                        if (_me == null) {
-                            _me = new NavigationService();
-                        }
-                    }
-                }
-                return _me;
-            }
-        }
-
-        private NavigationService() {
+        static NavigationService() {
             _mapping = new Dictionary<Type, Type>();
+            _viewModelArgumentMapping = new Dictionary<Type, dynamic>();
+
             _mapping[typeof(MainPageViewModel)] = typeof(MainPage);
             _mapping[typeof(CreateProfileViewModel)] = typeof(CreateProfilePage);
             _mapping[typeof(EditProfileViewModel)] = typeof(EditProfilePage);
+            _frame = Window.Current.Content as Frame;
         }
 
-        public void GoBack() {
-            var frame = Window.Current.Content as Frame;
-            if (frame.CanGoBack) {
-                frame.GoBack();
+        public static void GoBack() {
+            if (_frame.CanGoBack) {
+                _frame.GoBack();
             }
             else {
-                frame.Navigate(typeof(MainPage));
+                _frame.Navigate(typeof(MainPage));
             }
         }
 
-        public void GoBack(Type viewModel) {
-            var frame = Window.Current.Content as Frame;
-            if (frame.CanGoBack) {
-                frame.GoBack();
+        public static void GoBack(Type viewModel) {
+            if (_frame.CanGoBack) {
+                _frame.GoBack();
             }
             else {
                 Navigate(viewModel);
             }
         }
 
-        public void Navigate(Type viewModel) {
-            var frame = Window.Current.Content as Frame;
+        public static void Navigate(Type viewModel) {
             var pageType = _mapping[viewModel];
-            frame.Navigate(pageType);
+            _frame.Navigate(pageType);
         }
 
-        public void Navigate(Type viewModel, object context) {
-            var frame = Window.Current.Content as Frame;
-            var pageType = _mapping[viewModel];
-            frame.Navigate(pageType, context);
+        public static void Navigate(Type viewModelType, dynamic argument) {
+            var pageType = _mapping[viewModelType];
+            _viewModelArgumentMapping[viewModelType] = argument;
+            _frame.Navigate(pageType, argument);
+        }
+
+        public static dynamic GetContext(Type viewModel) {
+            var result = _viewModelArgumentMapping.SingleOrDefault(x => x.Key.Equals(viewModel));
+            _viewModelArgumentMapping[viewModel] = null;
+            return result.Value;
         }
     }
 }
