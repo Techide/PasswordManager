@@ -8,20 +8,22 @@ namespace PasswordManager.ViewModels {
 
     public class ViewModelLocator {
         private static Container _ioc;
-        private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<ViewModelLocator>();
+        private static ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(ViewModelLocator));
 
-        public ViewModelLocator() {
+        static ViewModelLocator() {
             _ioc = new Container();
             Log.Trace("Bootstrapping SimpleInjector Container...");
             Bootstrap();
             Log.Trace("Bootstrapping SimpleInjector Container: Done");
         }
 
-        public MainPageViewModel MainPage { get { return _ioc.GetInstance<MainPageViewModel>(); } }
+        public static MainPageViewModel MainPage { get { return _ioc.GetInstance<MainPageViewModel>(); } }
 
-        public CreateProfileViewModel CreateProfilePage { get { return _ioc.GetInstance<CreateProfileViewModel>(); } }
+        public static CreateProfileViewModel CreateProfilePage { get { return _ioc.GetInstance<CreateProfileViewModel>(); } }
 
-        public EditProfileViewModel EditProfilePage { get { return _ioc.GetInstance<EditProfileViewModel>(); } }
+        public static EditProfileViewModel EditProfilePage { get { return _ioc.GetInstance<EditProfileViewModel>(); } }
+
+        public static MasterPasswordQueryViewModel MasterPasswordPage { get { return _ioc.GetInstance<MasterPasswordQueryViewModel>(); } }
 
         private static void Bootstrap() {
             _ioc.RegisterCollection(typeof(IViewModel), new[] { typeof(IViewModel).GetTypeInfo().Assembly });

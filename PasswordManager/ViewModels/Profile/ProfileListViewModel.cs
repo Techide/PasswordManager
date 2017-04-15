@@ -3,24 +3,23 @@ using PasswordManager.Data.Queries;
 using PasswordManager.Data.Queries.Profiles.GetAllProfiles;
 using PasswordManager.Data.Queries.Profiles.GetProfilesByName;
 using PasswordManager.Models.Data.Commands;
+using PasswordManager.Models.Data.Commands.Profiles.DeleteProfile;
 using PasswordManager.Models.Data.Commands.Profiles.LoadProfileDetail;
 using PasswordManager.Models.DTO;
 using PasswordManager.Services.Navigation;
 using PasswordManager.Util.MVVM;
-using PasswordManager.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace PasswordManager.ViewModels {
 
     public class ProfileListViewModel : ABindableBase, IViewModel {
-        private ISeparatedQueryHandler<GetAllProfilesQuery, GetAllProfilesResult> _getAllProfilesHandler;
-        private ISeparatedCommandHandler<LoadProfileDetailsCommand> _updateProfileDetailsHandler;
-        private ISeparatedQueryHandler<GetProfilesByNameQuery, GetProfilesByNameResult> _getProfilesByNameHandler;
+        private readonly ISeparatedQueryHandler<GetAllProfilesQuery, GetAllProfilesResult> _getAllProfilesHandler;
+        private readonly ISeparatedCommandHandler<LoadProfileDetailsCommand> _updateProfileDetailsHandler;
+        private readonly ISeparatedQueryHandler<GetProfilesByNameQuery, GetProfilesByNameResult> _getProfilesByNameHandler;
+        private readonly ISeparatedCommandHandler<DeleteProfileCommand> _deleteProfileHandler;
         private ProfileDetailViewModel _profileDetailViewModel;
         private ObservableCollection<ProfileListItemEntity> _profiles;
         private List<ProfileListItemEntity> _profilesCache;
@@ -33,13 +32,16 @@ namespace PasswordManager.ViewModels {
             ISeparatedQueryHandler<GetAllProfilesQuery, GetAllProfilesResult> getAllProfilesHandler,
             ISeparatedQueryHandler<GetProfilesByNameQuery, GetProfilesByNameResult> getProfilesByNameHandler,
             ISeparatedCommandHandler<LoadProfileDetailsCommand> updateProfileDetailsHandler,
+            ISeparatedCommandHandler<DeleteProfileCommand> deleteProfileHandler,
             ProfileDetailViewModel profileDetailViewModel
         ) {
             _getAllProfilesHandler = getAllProfilesHandler;
             _getProfilesByNameHandler = getProfilesByNameHandler;
             _updateProfileDetailsHandler = updateProfileDetailsHandler;
             _profileDetailViewModel = profileDetailViewModel;
+            _deleteProfileHandler = deleteProfileHandler;
             CreateProfileCommand = new DelegateCommand(CreateProfileCommandExecute);
+            DeleteProfileCommand = new DelegateCommand<int>(DeleteProfileCommandExecute);
             RefreshProfiles();
         }
 
@@ -85,10 +87,17 @@ namespace PasswordManager.ViewModels {
 
         #region Commands
 
-        public DelegateCommand CreateProfileCommand { get; set; }
+        public DelegateCommand CreateProfileCommand { get; private set; }
 
-        private void CreateProfileCommandExecute(object parameter) {
+        private void CreateProfileCommandExecute() {
             NavigationService.Navigate(typeof(CreateProfileViewModel));
+        }
+
+        public DelegateCommand<int> DeleteProfileCommand { get; set; }
+
+        private void DeleteProfileCommandExecute(int parameter) {
+            _deleteProfileHandler.Execute(new DeleteProfileCommand { Id = parameter });
+            RefreshProfiles();
         }
 
         #endregion Commands
@@ -97,10 +106,6 @@ namespace PasswordManager.ViewModels {
             var profiles = _getAllProfilesHandler.Execute(new GetAllProfilesQuery()).Profiles;
             Profiles = new ObservableCollection<ProfileListItemEntity>(profiles);
             _profilesCache = new List<ProfileListItemEntity>(profiles);
-            //var arg = NavigationService.GetContext(GetType()) as int?;
-            //if (arg.HasValue) {
-            //    _updateProfileDetailsHandler.Execute(new LoadProfileDetailsCommand(arg.Value, _profileDetailViewModel));
-            //}
         }
     }
 }

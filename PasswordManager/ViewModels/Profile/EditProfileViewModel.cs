@@ -66,7 +66,7 @@ namespace PasswordManager.ViewModels {
             return canExecute;
         }
 
-        private void UpdateCommand_Execute(object obj) {
+        private void UpdateCommand_Execute() {
             try {
                 var command = new UpdateProfileCommand {
                     Id = _id,
@@ -84,7 +84,7 @@ namespace PasswordManager.ViewModels {
 
         public DelegateCommand CancelCommand { get; set; }
 
-        private void CancelCommand_Execute(object parameter) {
+        private void CancelCommand_Execute() {
             NavigationService.GoBack(typeof(MainPageViewModel));
         }
     }

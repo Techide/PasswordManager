@@ -8,6 +8,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
       d:DataContext="{d:DesignInstance viewModels:MainPageViewModel}"
       DataContext="{Binding MainPage, Source={StaticResource ViewModelLocator}}">
     <interactivity:Interaction.Behaviors>
@@ -17,7 +18,7 @@
             </interactions:EventTriggerBehavior.Actions>
         </interactions:EventTriggerBehavior>
     </interactivity:Interaction.Behaviors>
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid>
         <views:ProfileListUserControl DataContext="{Binding ProfileListViewModel}" />
     </Grid>
 </Page>

@@ -12,11 +12,11 @@ namespace PasswordManager.Services.Cryptography {
         public static CryptoPassword Encrypt(string password) {
             CryptoPassword result;
             using (var aes = Aes.Create()) {
-                var pwd = SettingsService.Password;
-                var cp = new CryptoPassword { PublicKey = pwd };
+                aes.Padding = PaddingMode.None;
                 aes.GenerateIV();
-                cp.Salt = CreateSalt(256);
+                var cp = new CryptoPassword { PublicKey = SettingsService.Password };
                 aes.Key = CreateKey(cp);
+                cp.Salt = CreateSalt(256);
                 cp.IV = aes.IV;
                 cp.PrivateKey = aes.Key;
                 cp.EncryptedPassword = EncryptPassword(password, cp.IV, cp.PrivateKey, cp.Salt);
@@ -36,6 +36,7 @@ namespace PasswordManager.Services.Cryptography {
         private static byte[] EncryptPassword(string password, byte[] IV, byte[] Key, byte[] Salt) {
             byte[] result;
             using (var aes = Aes.Create()) {
+                aes.Padding = PaddingMode.None;
                 aes.Key = Key;
                 aes.IV = IV;
                 ICryptoTransform transform = aes.CreateEncryptor(aes.Key, aes.IV);
@@ -55,6 +56,7 @@ namespace PasswordManager.Services.Cryptography {
         private static string DecryptPassword(CryptoPassword cp) {
             string result;
             using (var aes = Aes.Create()) {
+                aes.Padding = PaddingMode.None;
                 aes.Key = CreateKey(cp);
                 aes.IV = cp.IV;
                 ICryptoTransform transform = aes.CreateDecryptor(aes.Key, aes.IV);

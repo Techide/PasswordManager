@@ -50,7 +50,7 @@ namespace PasswordManager.ViewModels {
             return !string.IsNullOrWhiteSpace(_profile) && !string.IsNullOrWhiteSpace(_account) && !string.IsNullOrWhiteSpace(_password);
         }
 
-        private void SaveCommandExecuted(object obj) {
+        private void SaveCommandExecuted() {
             var command = new CreateProfileCommand {
                 Profile = _profile,
                 Account = _account,
@@ -67,7 +67,7 @@ namespace PasswordManager.ViewModels {
 
         public DelegateCommand CancelCommand { get; set; }
 
-        private void CancelCommandExecuted(object obj) {
+        private void CancelCommandExecuted() {
             NavigationService.GoBack(typeof(MainPageViewModel));
         }
     }

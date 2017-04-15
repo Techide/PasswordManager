@@ -76,7 +76,7 @@ namespace PasswordManager.ViewModels {
             return !string.IsNullOrWhiteSpace(_accountDetail);
         }
 
-        private void CopyAccountCommand_Execute(object parameter) {
+        private void CopyAccountCommand_Execute() {
             CopyToClipboard(_accountDetail);
         }
 
@@ -90,7 +90,7 @@ namespace PasswordManager.ViewModels {
             return !string.IsNullOrWhiteSpace(_passwordDetail);
         }
 
-        private void CopyPasswordCommand_Execute(object parameter) {
+        private void CopyPasswordCommand_Execute() {
             CopyToClipboard(_passwordDetail);
         }
 
@@ -104,7 +104,7 @@ namespace PasswordManager.ViewModels {
             return _profileDetail != null;
         }
 
-        public void EditProfileCommand_Execute(object parameter) {
+        public void EditProfileCommand_Execute() {
             var dto = new ProfileDTO {
                 ID = _profileDetail.Id,
                 Profile = _profileDetail.Profile,

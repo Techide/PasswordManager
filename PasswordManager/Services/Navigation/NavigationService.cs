@@ -3,17 +3,12 @@ using PasswordManager.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
 namespace PasswordManager.Services.Navigation {
 
     public static class NavigationService {
-        private static object syncRoot = new object();
-
         private static Dictionary<Type, Type> _mapping;
         private static Dictionary<Type, dynamic> _viewModelArgumentMapping;
         private static Frame _frame;

@@ -2,7 +2,9 @@
 using System.Runtime.CompilerServices;
 
 namespace PasswordManager.Util.MVVM {
+
     public abstract class ABindableBase : INotifyPropertyChanged {
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected bool Set<T>(ref T item, T value, [CallerMemberName] string propertyName = null) {

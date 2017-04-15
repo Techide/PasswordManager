@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PasswordManager.Data.EF;
 using PasswordManager.Services.Settings;
 using PasswordManager.Views;
+using PasswordManager.Views.MasterPassword;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -23,15 +24,16 @@ namespace PasswordManager {
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App() {
-            InitializeComponent();
-            Suspending += OnSuspending;
-
             var target = new MetroLog.Targets.FileStreamingTarget();
             foreach (var level in (LogLevel[])Enum.GetValues(typeof(LogLevel))) {
                 LogManagerFactory.DefaultConfiguration.AddTarget(level, target);
             }
 
             Log = LogManagerFactory.DefaultLogManager.GetLogger<App>();
+
+            InitializeComponent();
+            UnhandledException += App_UnhandledException;
+            Suspending += OnSuspending;
 
             using (var db = new PasswordManagerContext()) {
                 try {
@@ -42,6 +44,15 @@ namespace PasswordManager {
                 }
             }
             SettingsService.Initialize();
+        }
+
+        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
+            Log.Error("An unhandled exception was caught.", e);
+            e.Handled = true;
+        }
+
+        protected override void OnActivated(IActivatedEventArgs args) {
+            base.OnActivated(args);
         }
 
         /// <summary>
@@ -73,7 +84,8 @@ namespace PasswordManager {
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate(typeof(MasterPasswordQueryPage), e.Arguments);
+                    //rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();

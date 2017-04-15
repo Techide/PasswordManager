@@ -4,6 +4,9 @@
              xmlns:views="using:PasswordManager.Views"
              xmlns:viewModels="using:PasswordManager.ViewModels"
              xmlns:converters="using:PasswordManager.Util.Converters"
+             xmlns:interactions="using:Microsoft.Xaml.Interactions.Core"
+             xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+             xmlns:mvvm="using:PasswordManager.Util.MVVM"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
@@ -13,6 +16,12 @@
 
     <UserControl.Resources>
         <converters:BoolToVisibilityConverter x:Key="Bool2Vis" />
+        <MenuFlyout x:Key="ItemFlyout">
+            <MenuFlyoutItem Text="A"
+                            Tag="&#xE1A5;" />
+            <MenuFlyoutItem Text="B"
+                            Tag="&#xE2F6;" />
+        </MenuFlyout>
     </UserControl.Resources>
 
     <Grid Background="{ThemeResource AppBarBackground}">
@@ -50,14 +59,58 @@
                 </Grid>
                 <Border Grid.Row="1"
                         BorderThickness="0">
-                    <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
                         <AutoSuggestBox Text="{Binding QueryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         PlaceholderText="Search profiles..." />
                         <ListBox ItemsSource="{Binding Profiles}"
-                                 DisplayMemberPath="Name"
+                                 Name="ItemsList"
+                                 Grid.Row="1"
+                                 ScrollViewer.VerticalScrollMode="Auto"
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                                  Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
-                                 SelectedItem="{Binding SelectedListItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    </StackPanel>
+                                 SelectedItem="{Binding SelectedListItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Background"
+                                            Value="Transparent" />
+                                    <Setter Property="HorizontalContentAlignment"
+                                            Value="Stretch" />
+                                    <Setter Property="VerticalContentAlignment"
+                                            Value="Stretch" />
+                                    <Setter Property="Padding"
+                                            Value="0" />
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderThickness="12"
+                                            Background="Transparent"
+                                            BorderBrush="Transparent">
+                                        <TextBlock Text="{Binding Name}">
+                                        </TextBlock>
+                                        <FlyoutBase.AttachedFlyout>
+                                            <MenuFlyout Placement="Right">
+                                                <MenuFlyoutItem Text="Delete"
+                                                                Command="{Binding DataContext.DeleteProfileCommand, ElementName=ItemsList}"
+                                                                CommandParameter="{Binding Id}" />
+                                            </MenuFlyout>
+                                        </FlyoutBase.AttachedFlyout>
+                                        <interactivity:Interaction.Behaviors>
+                                            <interactions:EventTriggerBehavior EventName="RightTapped">
+                                                <interactions:EventTriggerBehavior.Actions>
+                                                    <mvvm:OpenMenuFlyoutAction />
+                                                </interactions:EventTriggerBehavior.Actions>
+                                            </interactions:EventTriggerBehavior>
+                                        </interactivity:Interaction.Behaviors>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
                 </Border>
             </Grid>
         </Border>

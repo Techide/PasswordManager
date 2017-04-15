@@ -2,20 +2,21 @@
 using System.Windows.Input;
 
 namespace PasswordManager.Util.MVVM {
-    public class DelegateCommand : ICommand {
 
+    public class DelegateCommand<T> : ICommand {
         private readonly Predicate<object> _canExecute;
-        private readonly Action<object> _execute;
+        private readonly Action<T> _execute;
 
+        public DelegateCommand(Action<T> executeMethod) : this(executeMethod, null) {
+        }
 
-        public DelegateCommand(Action<object> executeMethod) : this(executeMethod, null) { }
-
-        public DelegateCommand(Action<object> executeMethod, Predicate<object> canExecuteCondition) {
+        public DelegateCommand(Action<T> executeMethod, Predicate<object> canExecuteCondition) {
             _execute = executeMethod;
             _canExecute = canExecuteCondition;
         }
 
         #region Icommand
+
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter) {
@@ -26,9 +27,40 @@ namespace PasswordManager.Util.MVVM {
             if (!CanExecute(parameter)) {
                 return;
             }
-            _execute(parameter);
+            _execute((T)parameter);
         }
-        #endregion
+
+        #endregion Icommand
+
+        public void RaiseCanExecuteChanged() {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public class DelegateCommand : ICommand {
+        private readonly Predicate<object> _canExecute;
+        private readonly Action _execute;
+
+        public event EventHandler CanExecuteChanged;
+
+        public DelegateCommand(Action executeMethod) : this(executeMethod, null) {
+        }
+
+        public DelegateCommand(Action executeMethod, Predicate<object> canExecuteCondition) {
+            _execute = executeMethod;
+            _canExecute = canExecuteCondition;
+        }
+
+        public bool CanExecute(object parameter) {
+            return _canExecute == null ? true : _canExecute(parameter);
+        }
+
+        public void Execute(object parameter) {
+            if (!CanExecute(parameter)) {
+                return;
+            }
+            _execute();
+        }
 
         public void RaiseCanExecuteChanged() {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);

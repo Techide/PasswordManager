@@ -16,6 +16,10 @@ namespace PasswordManager.Services.Settings {
             }
         }
 
+        public static class Keys {
+            public const string MASTER_PASSWORD = "MasterPwd";
+        }
+
 #if DEBUG
 
         public static async void Initialize() {

@@ -17,7 +17,7 @@ namespace PasswordManager.ViewModels {
 
         public DelegateCommand LoadProfileListCommand { get; set; }
 
-        private void LoadProfilesCommand_Execute(object argument) {
+        private void LoadProfilesCommand_Execute() {
             var id = NavigationService.GetContext(GetType()) as int?;
             if (id.HasValue) {
                 ProfileListViewModel.SelectedListItem = ProfileListViewModel.Profiles.SingleOrDefault(x => x.Id.Equals(id.Value));
