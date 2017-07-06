@@ -1,5 +1,6 @@
 ﻿using PasswordManager.Data.EF;
 using PasswordManager.Services.Cryptography;
+using PasswordManager.Services.Settings;
 using System;
 
 namespace PasswordManager.Models.Data.Commands.Profiles.UpdateProfile {
@@ -8,7 +9,7 @@ namespace PasswordManager.Models.Data.Commands.Profiles.UpdateProfile {
 
         public void Execute(UpdateProfileCommand command) {
             using (var db = new PasswordManagerContext()) {
-                var pwd = Cryptographer.Encrypt(command.Password);
+                var pwd = Cryptographer.Encrypt(command.Password, AppSettings.MasterPassword);
                 var profile = db.Profiles.Find(command.Id);
                 profile.Name = command.Profile;
                 profile.Account = command.Account;

@@ -1,5 +1,4 @@
-﻿using MetroLog;
-using PasswordManager.Data.Queries;
+﻿using PasswordManager.Data.Queries;
 using PasswordManager.Data.Queries.Profiles.GetAllProfiles;
 using PasswordManager.Data.Queries.Profiles.GetProfilesByName;
 using PasswordManager.Models.Data.Commands;
@@ -25,8 +24,6 @@ namespace PasswordManager.ViewModels {
         private List<ProfileListItemEntity> _profilesCache;
         private ProfileListItemEntity _selectedItem;
         private string _queryText;
-
-        private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<ProfileListViewModel>();
 
         public ProfileListViewModel(
             ISeparatedQueryHandler<GetAllProfilesQuery, GetAllProfilesResult> getAllProfilesHandler,
@@ -61,7 +58,7 @@ namespace PasswordManager.ViewModels {
                         Profiles = new ObservableCollection<ProfileListItemEntity>(_profilesCache.Where(x => x.Name.ToLowerInvariant().Contains(query)));
                     }
                     catch (Exception ex) {
-                        Log.Error(ex.Message, ex);
+                        //Log.Error(ex.Message, ex);
                     }
                 }
                 else {

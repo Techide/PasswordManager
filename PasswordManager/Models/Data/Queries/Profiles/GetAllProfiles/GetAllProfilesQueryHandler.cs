@@ -4,16 +4,19 @@ using System.Linq;
 
 namespace PasswordManager.Data.Queries.Profiles.GetAllProfiles {
 
-    public class GetAllProfilesQueryHandler : ISeparatedQueryHandler<GetAllProfilesQuery, GetAllProfilesResult> {
+    public class GetAllProfilesQueryHandler : ABaseSeparatedQueryHandler<GetAllProfilesQuery, GetAllProfilesResult> {
 
-        public GetAllProfilesResult Execute(GetAllProfilesQuery query) {
+        public GetAllProfilesQueryHandler(PasswordManagerContext context) : base(context) {
+        }
+
+        public override GetAllProfilesResult Execute(GetAllProfilesQuery query) {
             var result = new GetAllProfilesResult();
-            using (var db = new PasswordManagerContext()) {
-                result.Profiles.AddRange(db.Profiles.Select(x => new ProfileListItemEntity {
-                    Id = x.Id,
-                    Name = x.Name
-                }));
-            }
+
+            result.Profiles.AddRange(_context.Profiles.Select(x => new ProfileListItemEntity {
+                Id = x.Id,
+                Name = x.Name
+            }));
+
             return result;
         }
     }

@@ -1,23 +1,20 @@
 ﻿using PasswordManager.Data.EF;
 using PasswordManager.Data.EF.Entities;
 using PasswordManager.Services.Cryptography;
-using PasswordManager.Services.Settings;
-using System;
-using System.Diagnostics;
 using System.Linq;
 
 namespace PasswordManager.Data.Queries.Profiles.GetProfileDetail {
 
-    public class GetProfileDetailQueryHandler : ISeparatedQueryHandler<GetProfileDetailQuery, GetProfileDetailResult> {
+    public class GetProfileDetailQueryHandler : ABaseSeparatedQueryHandler<GetProfileDetailQuery, GetProfileDetailResult> {
 
-        public GetProfileDetailResult Execute(GetProfileDetailQuery query) {
-            GetProfileDetailResult result = null;
-            Profile p = null;
-            using (var db = new PasswordManagerContext()) {
-                p = db.Profiles.SingleOrDefault(x => x.Id == query.ProfileId);
-            }
+        public GetProfileDetailQueryHandler(PasswordManagerContext context) : base(context) {
+        }
+
+        public override GetProfileDetailResult Execute(GetProfileDetailQuery query) {
+            GetProfileDetailResult result = default(GetProfileDetailResult);
+            var p = _context.Profiles.Find(query.ProfileId);
             if (p != null) {
-                var pwd = GetDecryptedPassword(p);
+                var pwd = GetDecryptedPassword(p, query.PublicKey);
                 result = new GetProfileDetailResult {
                     Profile = p.Name,
                     Account = p.Account,
@@ -28,13 +25,12 @@ namespace PasswordManager.Data.Queries.Profiles.GetProfileDetail {
             return result;
         }
 
-        private string GetDecryptedPassword(Profile p) {
-            var publicKey = SettingsService.Password;
+        private string GetDecryptedPassword(Profile p, string publicKey) {
             var cp = new CryptoPassword {
                 EncryptedPassword = p.Password,
                 IV = p.IV,
                 Salt = p.Salt,
-                PublicKey = publicKey
+                KeyPhrase = publicKey
             };
 
             return Cryptographer.Decrypt(cp);

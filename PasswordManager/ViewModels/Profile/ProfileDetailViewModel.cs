@@ -1,8 +1,8 @@
-﻿using MetroLog;
-using PasswordManager.Data.Queries;
+﻿using PasswordManager.Data.Queries;
 using PasswordManager.Data.Queries.Profiles.GetProfileDetail;
 using PasswordManager.Models.DTO;
 using PasswordManager.Services.Navigation;
+using PasswordManager.Services.Settings;
 using PasswordManager.Util.MVVM;
 using System;
 using Windows.ApplicationModel.DataTransfer;
@@ -10,7 +10,6 @@ using Windows.ApplicationModel.DataTransfer;
 namespace PasswordManager.ViewModels {
 
     public class ProfileDetailViewModel : ABindableBase, IViewModel {
-        private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<ProfileDetailViewModel>();
         private ISeparatedQueryHandler<GetProfileDetailQuery, GetProfileDetailResult> _getProfileDetailHandler;
         private GetProfileDetailResult _profileDetail;
         private string _accountDetail;
@@ -54,13 +53,13 @@ namespace PasswordManager.ViewModels {
 
         public void LoadDetails(int profileId) {
             try {
-                ProfileDetail = _getProfileDetailHandler.Execute(new GetProfileDetailQuery { ProfileId = profileId });
+                ProfileDetail = _getProfileDetailHandler.Execute(new GetProfileDetailQuery { ProfileId = profileId, PublicKey = AppSettings.MasterPassword });
                 AccountDetail = _profileDetail.Account;
                 PasswordDetail = _profileDetail.Password;
                 ShowDetails = _profileDetail != null;
             }
             catch (Exception ex) {
-                Log.Error(ex.Message, ex);
+                //Log.Error(ex.Message, ex);
             }
         }
 
@@ -133,7 +132,7 @@ namespace PasswordManager.ViewModels {
             }
             catch (Exception ex) {
                 //Log.Error(ex, ex.Message);
-                Log.Error(ex.Message, ex);
+                //Log.Error(ex.Message, ex);
             }
         }
 

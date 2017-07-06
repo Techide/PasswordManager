@@ -37,13 +37,13 @@
                     Grid.Row="2"
                     Margin="0,12,0,0"
                     HorizontalAlignment="Right">
+            <Button Content="Apply"
+                    Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+                    Command="{Binding UpdateCommand}" />
             <Button Content="Cancel"
                     Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
+                    Margin="1,0,0,0"
                     Command="{Binding CancelCommand}" />
-            <Button Content="Save"
-                    Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
-                    Command="{Binding UpdateCommand}"
-                    Margin="1,0,0,0" />
         </StackPanel>
     </Grid>
 </Page>

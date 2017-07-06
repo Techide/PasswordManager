@@ -13,22 +13,27 @@ namespace PasswordManager.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.1.0-rtm-22752");
+                .HasAnnotation("ProductVersion", "1.1.1");
 
             modelBuilder.Entity("PasswordManager.Data.EF.Entities.Profile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Account");
+                    b.Property<string>("Account")
+                        .IsRequired();
 
-                    b.Property<byte[]>("IV");
+                    b.Property<byte[]>("IV")
+                        .IsRequired();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<byte[]>("Password");
+                    b.Property<byte[]>("Password")
+                        .IsRequired();
 
-                    b.Property<byte[]>("Salt");
+                    b.Property<byte[]>("Salt")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -40,15 +45,16 @@ namespace PasswordManager.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Key")
+                    b.Property<string>("Name")
                         .IsRequired();
 
-                    b.Property<string>("Value");
+                    b.Property<byte[]>("Value");
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("Key")
-                        .HasName("AlternateKey_Key");
+                    b.HasAlternateKey("Name");
+
+                    b.HasIndex("Name");
 
                     b.ToTable("Settings");
                 });

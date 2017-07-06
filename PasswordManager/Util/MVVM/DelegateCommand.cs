@@ -40,8 +40,7 @@ namespace PasswordManager.Util.MVVM {
     public class DelegateCommand : ICommand {
         private readonly Predicate<object> _canExecute;
         private readonly Action _execute;
-
-        public event EventHandler CanExecuteChanged;
+        //private Func<object, object, Action> _executeMethodWithParam;
 
         public DelegateCommand(Action executeMethod) : this(executeMethod, null) {
         }
@@ -50,6 +49,19 @@ namespace PasswordManager.Util.MVVM {
             _execute = executeMethod;
             _canExecute = canExecuteCondition;
         }
+
+        //public RelayCommand(Func<object, object, Action> executeMethod) {
+        //    _executeMethodWithParam = executeMethod;
+        //}
+
+        //public RelayCommand(Func<object, object, Action> executeMethod, Predicate<object> canExecuteCondition) {
+        //    _executeMethodWithParam = executeMethod;
+        //    _canExecute = canExecuteCondition;
+        //}
+
+        #region ICommand
+
+        public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter) {
             return _canExecute == null ? true : _canExecute(parameter);
@@ -61,6 +73,8 @@ namespace PasswordManager.Util.MVVM {
             }
             _execute();
         }
+
+        #endregion ICommand
 
         public void RaiseCanExecuteChanged() {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);

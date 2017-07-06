@@ -1,26 +1,60 @@
-﻿using PasswordManager.Util.MVVM;
+﻿using PasswordManager.Models.Data.Commands;
+using PasswordManager.Models.Data.Commands.MasterPassword;
+using PasswordManager.Services.Navigation;
+using PasswordManager.Services.Settings;
+using PasswordManager.Util.MVVM;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PasswordManager.ViewModels.MasterPassword {
+namespace PasswordManager.ViewModels {
 
     public class MasterPasswordCreateViewModel : ABindableBase, IViewModel {
-        public string Password { get; set; }
+        private string _password;
+        private string _verifyPassword;
 
-        public MasterPasswordCreateViewModel() {
+        public string Password {
+            get { return _password; }
+            set {
+                Set(ref _password, value);
+                CreateMasterPasswordCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public string VerifyPassword {
+            get { return _verifyPassword; }
+            set {
+                Set(ref _verifyPassword, value);
+                CreateMasterPasswordCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private ISeparatedCommandHandler<CreateMasterPasswordCommand> _createMasterPasswordHandler;
+
+        public MasterPasswordCreateViewModel(ISeparatedCommandHandler<CreateMasterPasswordCommand> createMasterPasswordHandler) {
+            _createMasterPasswordHandler = createMasterPasswordHandler;
             CreateMasterPasswordCommand = new DelegateCommand(CreateMasterPassword, CreateMasterPasswordCheck);
         }
 
         private bool CreateMasterPasswordCheck(object obj) {
-            return string.IsNullOrWhiteSpace(Password);
+            var anyEmpty = (string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(VerifyPassword));
+            if (anyEmpty) {
+                return false;
+            }
+            return Password.Equals(VerifyPassword);
         }
 
         public DelegateCommand CreateMasterPasswordCommand { get; internal set; }
 
-        public void CreateMasterPassword() {
+        private void CreateMasterPassword() {
+            var command = new CreateMasterPasswordCommand { Password = Password };
+            try {
+                _createMasterPasswordHandler.Execute(command);
+                AppSettings.MasterPassword = Password;
+                NavigationService.Navigate(typeof(MainPageViewModel));
+            }
+            catch (Exception ex) {
+                AppSettings.MasterPassword = string.Empty;
+                throw;
+            }
         }
     }
 }

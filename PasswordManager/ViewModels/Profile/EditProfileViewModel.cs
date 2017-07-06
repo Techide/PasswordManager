@@ -1,6 +1,4 @@
-﻿using MetroLog;
-using PasswordManager.Data.Queries.Profiles.GetProfileDetail;
-using PasswordManager.Models.Data.Commands;
+﻿using PasswordManager.Models.Data.Commands;
 using PasswordManager.Models.Data.Commands.Profiles.UpdateProfile;
 using PasswordManager.Models.DTO;
 using PasswordManager.Services.Navigation;
@@ -11,7 +9,6 @@ namespace PasswordManager.ViewModels {
 
     public class EditProfileViewModel : ABindableBase, IViewModel {
         private ISeparatedCommandHandler<UpdateProfileCommand> _updateProfileHandler;
-        private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<EditProfileViewModel>();
         private int _id;
         private string _profile;
         private string _account;
@@ -78,7 +75,7 @@ namespace PasswordManager.ViewModels {
                 NavigationService.Navigate(typeof(MainPageViewModel), _id);
             }
             catch (Exception ex) {
-                Log.Error(string.Format("Failed to update profile details {0}", _profile), ex);
+                //Log.Error(string.Format("Failed to update profile details {0}", _profile), ex);
             }
         }
 

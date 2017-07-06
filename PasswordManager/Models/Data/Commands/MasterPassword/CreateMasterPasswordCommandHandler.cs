@@ -1,13 +1,7 @@
 ﻿using PasswordManager.Data.EF;
-using PasswordManager.Data.EF.Entities;
-using PasswordManager.Models.Data.EF.Entities;
 using PasswordManager.Services.Cryptography;
 using PasswordManager.Services.Settings;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PasswordManager.Models.Data.Commands.MasterPassword {
 
@@ -15,20 +9,11 @@ namespace PasswordManager.Models.Data.Commands.MasterPassword {
 
         public void Execute(CreateMasterPasswordCommand command) {
             using (var db = new PasswordManagerContext()) {
-                var pwd = Cryptographer.Encrypt(command.Password);
-                var profile = new Profile {
-                    Name = "Master",
-                    Password = pwd.EncryptedPassword,
-                    Account = "Master",
-                    IV = pwd.IV,
-                    Salt = pwd.Salt
-                };
-
-                db.Profiles.Add(profile);
+                var mp = db.Settings.Single(x => x.Name == AppSettings.MASTER_PASSWORD_KEY);
+                mp.Value = SecurePasswordHasher.Hash(command.Password);
+                db.Update(mp);
                 db.SaveChanges();
-
-                db.Settings.Add(new Setting { Key = SettingsService.Keys.MASTER_PASSWORD, Value = profile.Id.ToString() });
-                db.SaveChanges();
+                AppSettings.MasterPassword = command.Password;
             }
         }
     }

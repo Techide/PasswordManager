@@ -3,6 +3,8 @@ using PasswordManager.Models.Data.Queries.MasterPassword.AuthenticateMasterPassw
 using PasswordManager.Services.Navigation;
 using PasswordManager.Services.Settings;
 using PasswordManager.Util.MVVM;
+using Windows.UI.Xaml.Input;
+using Windows.System;
 
 namespace PasswordManager.ViewModels {
 
@@ -12,17 +14,36 @@ namespace PasswordManager.ViewModels {
         public string Password { get; set; }
 
         public MasterPasswordQueryViewModel(ISeparatedQueryHandler<AuthenticateMasterPasswordQuery, AuthenticateMasterPasswordResult> authenticateHandler) {
+            Password = string.Empty;
             _authenticateHandler = authenticateHandler;
-            AuthenticateMasterPasswordCommand = new DelegateCommand(AuthenticateMasterPassword);
+            PasswordBoxPasswordChangedCommand = new DelegateCommand(PasswordBoxPasswordChangedCommandExecute);
+            PasswordBoxKeyDownCommand = new DelegateCommand(PasswordBoxKeyDownCommandExecute, PasswordBoxKeyDownCommandCanExecute);
         }
 
-        public void AuthenticateMasterPassword() {
-            var result = _authenticateHandler.Execute(new AuthenticateMasterPasswordQuery(Password));
-            if (result.Authenticated) {
+        private void PasswordBoxPasswordChangedCommandExecute() {
+        }
+
+        private bool PasswordBoxKeyDownCommandCanExecute(object obj) {
+            var data = obj as KeyRoutedEventArgs;
+            if (data != null) {
+                return data.Key == VirtualKey.Enter;
+            }
+            return false;
+        }
+
+        private void PasswordBoxKeyDownCommandExecute() {
+            AuthenticateMasterPassword();
+        }
+
+        private void AuthenticateMasterPassword() {
+            if (_authenticateHandler.Execute(new AuthenticateMasterPasswordQuery(Password)).Authenticated) {
+                AppSettings.MasterPassword = Password;
                 NavigationService.Navigate(typeof(MainPageViewModel));
             }
         }
 
-        public DelegateCommand AuthenticateMasterPasswordCommand { get; set; }
+        public DelegateCommand PasswordBoxPasswordChangedCommand { get; set; }
+
+        public DelegateCommand PasswordBoxKeyDownCommand { get; set; }
     }
 }

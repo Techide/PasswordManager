@@ -13,8 +13,8 @@ namespace PasswordManager.Data.EF {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Setting>().HasAlternateKey(x => x.Key).HasName("AlternateKey_Key");
+            modelBuilder.Entity<Setting>().HasAlternateKey(x => x.Name);
+            modelBuilder.Entity<Setting>().HasIndex(x => x.Name);
         }
     }
 }

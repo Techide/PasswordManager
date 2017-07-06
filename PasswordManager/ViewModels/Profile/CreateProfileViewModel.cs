@@ -1,5 +1,4 @@
-﻿using MetroLog;
-using PasswordManager.Models.Data.Commands;
+﻿using PasswordManager.Models.Data.Commands;
 using PasswordManager.Models.Data.Commands.Profiles.CreateProfile;
 using PasswordManager.Services.Navigation;
 using PasswordManager.Util.MVVM;
@@ -8,7 +7,6 @@ using System;
 namespace PasswordManager.ViewModels {
 
     public class CreateProfileViewModel : ABindableBase, IViewModel {
-        private ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<CreateProfileViewModel>();
         private ISeparatedCommandHandler<CreateProfileCommand> _createProfileHandler;
         private string _profile;
         private string _account;
@@ -61,7 +59,7 @@ namespace PasswordManager.ViewModels {
                 NavigationService.GoBack(typeof(MainPageViewModel));
             }
             catch (Exception ex) {
-                Log.Error(ex.Message, ex);
+                //Log.Error(ex.Message, ex);
             }
         }
 

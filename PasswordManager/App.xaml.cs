@@ -1,8 +1,6 @@
-﻿using MetroLog;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PasswordManager.Data.EF;
 using PasswordManager.Services.Settings;
-using PasswordManager.Views;
 using PasswordManager.Views.MasterPassword;
 using System;
 using Windows.ApplicationModel;
@@ -17,20 +15,12 @@ namespace PasswordManager {
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
     sealed partial class App : Application {
-        private ILogger Log;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
         public App() {
-            var target = new MetroLog.Targets.FileStreamingTarget();
-            foreach (var level in (LogLevel[])Enum.GetValues(typeof(LogLevel))) {
-                LogManagerFactory.DefaultConfiguration.AddTarget(level, target);
-            }
-
-            Log = LogManagerFactory.DefaultLogManager.GetLogger<App>();
-
             InitializeComponent();
             UnhandledException += App_UnhandledException;
             Suspending += OnSuspending;
@@ -40,14 +30,23 @@ namespace PasswordManager {
                     db.Database.Migrate();
                 }
                 catch (Exception ex) {
-                    Log.Error(ex.Message, ex);
+                    //Log.Error(ex.Message, ex);
+                }
+                try {
+                    var t = db.Settings.FirstOrDefaultAsync(x => x.Name == AppSettings.MASTER_PASSWORD_KEY).Result;
+                    if (t == null) {
+                        db.Settings.Add(new Models.Data.EF.Entities.Setting { Name = AppSettings.MASTER_PASSWORD_KEY });
+                        db.SaveChanges();
+                    }
+                }
+                catch (Exception ex) {
+                    //Log.Error(ex.Message, ex);
                 }
             }
-            SettingsService.Initialize();
         }
 
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e) {
-            Log.Error("An unhandled exception was caught.", e);
+            //Log.Error("An unhandled exception was caught.", e);
             e.Handled = true;
         }
 
@@ -80,7 +79,10 @@ namespace PasswordManager {
             }
 
             if (e.PrelaunchActivated == false) {
-                if (rootFrame.Content == null) {
+                if (!AppSettings.HasMasterPassword) {
+                    rootFrame.Navigate(typeof(MasterPasswordCreatePage), e.Arguments);
+                }
+                else if (rootFrame.Content == null) {
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
@@ -111,7 +113,7 @@ namespace PasswordManager {
         private void OnSuspending(object sender, SuspendingEventArgs e) {
             var deferral = e.SuspendingOperation.GetDeferral();
             //Log.CloseAndFlush();
-            SettingsService.Password = null;
+            //SettingsProvider.MasterPassword = null;
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }

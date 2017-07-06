@@ -1,6 +1,7 @@
 ﻿using PasswordManager.Data.EF;
 using PasswordManager.Data.EF.Entities;
 using PasswordManager.Services.Cryptography;
+using PasswordManager.Services.Settings;
 
 namespace PasswordManager.Models.Data.Commands.Profiles.CreateProfile {
 
@@ -8,7 +9,7 @@ namespace PasswordManager.Models.Data.Commands.Profiles.CreateProfile {
 
         public void Execute(CreateProfileCommand command) {
             using (var db = new PasswordManagerContext()) {
-                var pwd = Cryptographer.Encrypt(command.Password);
+                var pwd = Cryptographer.Encrypt(command.Password, AppSettings.MasterPassword);
                 db.Profiles.Add(new Profile {
                     Name = command.Profile,
                     Password = pwd.EncryptedPassword,
