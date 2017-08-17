@@ -1,4 +1,4 @@
-﻿namespace PasswordManager.Data.Queries {
+﻿namespace PasswordManager.Models.Data.Queries {
 
     public interface ISeparatedQueryHandler<TQuery, TResult> where TQuery : ISeparatedQuery<TResult> {
 

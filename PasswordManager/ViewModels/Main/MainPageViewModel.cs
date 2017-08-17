@@ -5,8 +5,10 @@ using System.Linq;
 namespace PasswordManager.ViewModels {
 
     public class MainPageViewModel : IViewModel {
+        private INavigationService _navigation;
 
-        public MainPageViewModel(ProfileListViewModel userList) {
+        public MainPageViewModel(INavigationService navigation, ProfileListViewModel userList) {
+            _navigation = navigation;
             ProfileListViewModel = userList;
             LoadProfileListCommand = new DelegateCommand(LoadProfilesCommand_Execute);
         }
@@ -16,7 +18,7 @@ namespace PasswordManager.ViewModels {
         public DelegateCommand LoadProfileListCommand { get; set; }
 
         private void LoadProfilesCommand_Execute() {
-            var id = NavigationService.GetContext(GetType()) as int?;
+            var id = _navigation.GetParameters(GetType()) as int?;
             if (id.HasValue) {
                 ProfileListViewModel.SelectedListItem = ProfileListViewModel.Profiles.SingleOrDefault(x => x.Id.Equals(id.Value));
             }

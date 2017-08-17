@@ -1,4 +1,4 @@
-﻿namespace PasswordManager.Models.Data.Commands.Profiles.LoadProfileDetail {
+﻿namespace PasswordManager.Models.Data.Commands {
 
     public class LoadProfileDetailsCommandHandler : ISeparatedCommandHandler<LoadProfileDetailsCommand> {
 

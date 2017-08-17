@@ -1,7 +1,7 @@
 ﻿using PasswordManager.Models.DTO;
 using System.Collections.Generic;
 
-namespace PasswordManager.Data.Queries.Profiles.GetProfilesByName {
+namespace PasswordManager.Models.Data.Queries {
 
     public class GetProfilesByNameResult {
 

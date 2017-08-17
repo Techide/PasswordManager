@@ -1,9 +1,8 @@
-﻿using PasswordManager.Data.EF;
+﻿using PasswordManager.Models.Data.EF;
 using PasswordManager.Services.Cryptography;
 using PasswordManager.Services.Settings;
-using System;
 
-namespace PasswordManager.Models.Data.Commands.Profiles.UpdateProfile {
+namespace PasswordManager.Models.Data.Commands {
 
     public class UpdateProfileCommandHandler : ISeparatedCommandHandler<UpdateProfileCommand> {
 

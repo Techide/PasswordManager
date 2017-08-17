@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PasswordManager.Models.Data.EF.Entities {
+﻿namespace PasswordManager.Models.Data.EF {
 
     public class Setting {
         public int Id { get; set; }

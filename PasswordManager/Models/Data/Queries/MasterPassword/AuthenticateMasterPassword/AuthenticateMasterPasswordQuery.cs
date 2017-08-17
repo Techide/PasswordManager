@@ -1,7 +1,6 @@
-﻿using PasswordManager.Data.Queries;
-using PasswordManager.Services.Settings;
+﻿using PasswordManager.Services.Settings;
 
-namespace PasswordManager.Models.Data.Queries.MasterPassword.AuthenticateMasterPassword {
+namespace PasswordManager.Models.Data.Queries {
 
     public class AuthenticateMasterPasswordQuery : ISeparatedQuery<AuthenticateMasterPasswordResult> {
 

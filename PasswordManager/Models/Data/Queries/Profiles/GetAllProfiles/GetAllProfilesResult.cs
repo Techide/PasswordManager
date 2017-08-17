@@ -2,7 +2,7 @@
 using PasswordManager.Util.MVVM;
 using System.Collections.Generic;
 
-namespace PasswordManager.Data.Queries.Profiles.GetAllProfiles {
+namespace PasswordManager.Models.Data.Queries {
 
     public class GetAllProfilesResult : ABindableBase {
 

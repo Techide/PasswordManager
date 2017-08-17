@@ -1,9 +1,8 @@
-﻿using PasswordManager.Data.EF;
-using PasswordManager.Data.EF.Entities;
+﻿using PasswordManager.Models.Data.EF;
 using PasswordManager.Services.Cryptography;
 using PasswordManager.Services.Settings;
 
-namespace PasswordManager.Models.Data.Commands.Profiles.CreateProfile {
+namespace PasswordManager.Models.Data.Commands {
 
     public class CreateProfileCommandHandler : ISeparatedCommandHandler<CreateProfileCommand> {
 

@@ -1,3 +1,3 @@
-﻿namespace PasswordManager.Data.Queries.Profiles.GetAllProfiles {
+﻿namespace PasswordManager.Models.Data.Queries {
     public class GetAllProfilesQuery : ISeparatedQuery<GetAllProfilesResult> { }
 }

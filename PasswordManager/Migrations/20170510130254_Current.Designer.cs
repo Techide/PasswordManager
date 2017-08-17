@@ -1,12 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using PasswordManager.Data.EF;
+using PasswordManager.Models.Data.EF;
 
-namespace PasswordManager.Migrations
-{
+namespace PasswordManager.Migrations {
     [DbContext(typeof(PasswordManagerContext))]
     [Migration("20170510130254_Current")]
     partial class Current

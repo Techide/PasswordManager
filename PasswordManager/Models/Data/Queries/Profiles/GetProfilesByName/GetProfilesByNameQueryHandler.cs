@@ -1,8 +1,8 @@
-﻿using PasswordManager.Data.EF;
+﻿using PasswordManager.Models.Data.EF;
 using PasswordManager.Models.DTO;
 using System.Linq;
 
-namespace PasswordManager.Data.Queries.Profiles.GetProfilesByName {
+namespace PasswordManager.Models.Data.Queries {
 
     public class GetProfilesByNameQueryHandler : ABaseSeparatedQueryHandler<GetProfilesByNameQuery, GetProfilesByNameResult> {
 

@@ -1,4 +1,4 @@
-﻿namespace PasswordManager.Models.Data.Commands.Profiles.CreateProfile {
+﻿namespace PasswordManager.Models.Data.Commands {
 
     public class CreateProfileCommand : ISeparatedCommand {
         public string Profile { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PasswordManager.Data.EF.Entities {
+namespace PasswordManager.Models.Data.EF {
 
     public class Profile {
         public int Id { get; set; }

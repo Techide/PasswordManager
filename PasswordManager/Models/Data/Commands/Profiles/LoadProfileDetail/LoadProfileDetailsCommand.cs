@@ -1,6 +1,6 @@
 ﻿using PasswordManager.ViewModels;
 
-namespace PasswordManager.Models.Data.Commands.Profiles.LoadProfileDetail {
+namespace PasswordManager.Models.Data.Commands {
 
     public class LoadProfileDetailsCommand : ISeparatedCommand {
         private int _accountId;

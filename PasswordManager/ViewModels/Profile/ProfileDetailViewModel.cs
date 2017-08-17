@@ -1,5 +1,4 @@
-﻿using PasswordManager.Data.Queries;
-using PasswordManager.Data.Queries.Profiles.GetProfileDetail;
+﻿using PasswordManager.Models.Data.Queries;
 using PasswordManager.Models.DTO;
 using PasswordManager.Services.Navigation;
 using PasswordManager.Services.Settings;
@@ -15,6 +14,7 @@ namespace PasswordManager.ViewModels {
         private string _accountDetail;
         private string _passwordDetail;
         private bool _detailVisibility;
+        private INavigationService _navigation;
 
         private GetProfileDetailResult ProfileDetail {
             get { return _profileDetail; }
@@ -24,7 +24,8 @@ namespace PasswordManager.ViewModels {
             }
         }
 
-        public ProfileDetailViewModel(ISeparatedQueryHandler<GetProfileDetailQuery, GetProfileDetailResult> getProfileDetailHandler) {
+        public ProfileDetailViewModel(INavigationService navigation, ISeparatedQueryHandler<GetProfileDetailQuery, GetProfileDetailResult> getProfileDetailHandler) {
+            _navigation = navigation;
             _getProfileDetailHandler = getProfileDetailHandler;
             CopyAccountCommand = new DelegateCommand(CopyAccountCommand_Execute, CopyAccountCommand_CanExecute);
             CopyPasswordCommand = new DelegateCommand(CopyPasswordCommand_Execute, CopyPasswordCommand_CanExecute);
@@ -110,7 +111,7 @@ namespace PasswordManager.ViewModels {
                 Account = _profileDetail.Account,
                 Password = _profileDetail.Password
             };
-            NavigationService.Navigate(typeof(EditProfileViewModel), dto);
+            _navigation.Navigate(typeof(EditProfileViewModel), dto);
         }
 
         #endregion EditProfileCommand

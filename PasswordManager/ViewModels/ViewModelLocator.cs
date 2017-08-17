@@ -1,6 +1,7 @@
-﻿using PasswordManager.Data.EF;
-using PasswordManager.Data.Queries;
-using PasswordManager.Models.Data.Commands;
+﻿using PasswordManager.Models.Data.Commands;
+using PasswordManager.Models.Data.EF;
+using PasswordManager.Models.Data.Queries;
+using PasswordManager.Services.Navigation;
 using SimpleInjector;
 using System.Reflection;
 
@@ -14,18 +15,21 @@ namespace PasswordManager.ViewModels {
             Bootstrap();
         }
 
-        public static MainPageViewModel MainPage { get { return _ioc.GetInstance<MainPageViewModel>(); } }
+        public static MainPageViewModel Main { get { return _ioc.GetInstance<MainPageViewModel>(); } }
 
-        public static CreateProfileViewModel CreateProfilePage { get { return _ioc.GetInstance<CreateProfileViewModel>(); } }
+        public static CreateProfileViewModel CreateProfile { get { return _ioc.GetInstance<CreateProfileViewModel>(); } }
 
-        public static EditProfileViewModel EditProfilePage { get { return _ioc.GetInstance<EditProfileViewModel>(); } }
+        public static EditProfileViewModel EditProfile { get { return _ioc.GetInstance<EditProfileViewModel>(); } }
 
-        public static MasterPasswordQueryViewModel MasterPasswordQueryPage { get { return _ioc.GetInstance<MasterPasswordQueryViewModel>(); } }
+        public static MasterPasswordQueryViewModel MasterPasswordQuery { get { return _ioc.GetInstance<MasterPasswordQueryViewModel>(); } }
 
-        public static MasterPasswordCreateViewModel MasterPasswordCreatePage { get { return _ioc.GetInstance<MasterPasswordCreateViewModel>(); } }
+        public static MasterPasswordCreateViewModel MasterPasswordCreate { get { return _ioc.GetInstance<MasterPasswordCreateViewModel>(); } }
+
+        public static NavigationMenuViewModel NavigationMenu { get { return _ioc.GetInstance<NavigationMenuViewModel>(); } }
 
         private static void Bootstrap() {
             _ioc.Register<PasswordManagerContext>(Lifestyle.Transient);
+            _ioc.Register<NavigationService>(Lifestyle.Singleton);
 
             _ioc.RegisterCollection(typeof(IViewModel), new[] { typeof(IViewModel).GetTypeInfo().Assembly });
             _ioc.Register(typeof(ISeparatedQuery<>), new[] { typeof(ISeparatedQuery<>).GetTypeInfo().Assembly });

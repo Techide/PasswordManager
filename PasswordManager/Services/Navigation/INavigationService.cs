@@ -1,18 +1,17 @@
-﻿using PasswordManager.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using PasswordManager.Models.DTO;
 
 namespace PasswordManager.Services.Navigation {
 
     public interface INavigationService {
 
-        void Navigate(Type navigatablePage);
+        void Navigate(Type navigatableViewModel);
 
-        void Navigate(Type navigatablePage, dynamic context);
+        void Navigate(Type navigatableViewModel, dynamic parameters);
 
-        void GoBack();
+        void GoBack(Type viewModel);
+
+        dynamic GetParameters(Type viewModel);
+
     }
 }

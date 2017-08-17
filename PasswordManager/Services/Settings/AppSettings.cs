@@ -1,4 +1,4 @@
-﻿using PasswordManager.Data.EF;
+﻿using PasswordManager.Models.Data.EF;
 using System.Linq;
 
 namespace PasswordManager.Services.Settings {

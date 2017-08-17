@@ -1,5 +1,4 @@
 ﻿using PasswordManager.Models.Data.Commands;
-using PasswordManager.Models.Data.Commands.Profiles.UpdateProfile;
 using PasswordManager.Models.DTO;
 using PasswordManager.Services.Navigation;
 using PasswordManager.Util.MVVM;
@@ -14,6 +13,7 @@ namespace PasswordManager.ViewModels {
         private string _account;
         private string _password;
         private ProfileDTO _dto;
+        private INavigationService _navigation;
 
         public string Profile {
             get {
@@ -41,12 +41,13 @@ namespace PasswordManager.ViewModels {
             }
         }
 
-        public EditProfileViewModel(ISeparatedCommandHandler<UpdateProfileCommand> updateProfileHandler) {
+        public EditProfileViewModel(INavigationService navigation, ISeparatedCommandHandler<UpdateProfileCommand> updateProfileHandler) {
+            _navigation = navigation;
             _updateProfileHandler = updateProfileHandler;
             UpdateCommand = new DelegateCommand(UpdateCommand_Execute, UpdateCommand_CanExecute);
             CancelCommand = new DelegateCommand(CancelCommand_Execute);
 
-            _dto = NavigationService.GetContext(GetType()) as ProfileDTO;
+            _dto = _navigation.GetParameters(GetType()) as ProfileDTO;
             _id = _dto.ID;
             _profile = _dto.Profile;
             _account = _dto.Account;
@@ -72,7 +73,7 @@ namespace PasswordManager.ViewModels {
                     Password = _password
                 };
                 _updateProfileHandler.Execute(command);
-                NavigationService.Navigate(typeof(MainPageViewModel), _id);
+                _navigation.Navigate(typeof(MainPageViewModel), _id);
             }
             catch (Exception ex) {
                 //Log.Error(string.Format("Failed to update profile details {0}", _profile), ex);
@@ -82,7 +83,7 @@ namespace PasswordManager.ViewModels {
         public DelegateCommand CancelCommand { get; set; }
 
         private void CancelCommand_Execute() {
-            NavigationService.GoBack(typeof(MainPageViewModel));
+            _navigation.GoBack(typeof(MainPageViewModel));
         }
     }
 }

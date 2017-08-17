@@ -1,9 +1,7 @@
-﻿using PasswordManager.Data.EF;
-using PasswordManager.Data.EF.Entities;
+﻿using PasswordManager.Models.Data.EF;
 using PasswordManager.Services.Cryptography;
-using System.Linq;
 
-namespace PasswordManager.Data.Queries.Profiles.GetProfileDetail {
+namespace PasswordManager.Models.Data.Queries {
 
     public class GetProfileDetailQueryHandler : ABaseSeparatedQueryHandler<GetProfileDetailQuery, GetProfileDetailResult> {
 

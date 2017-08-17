@@ -1,5 +1,4 @@
 ﻿using PasswordManager.Models.Data.Commands;
-using PasswordManager.Models.Data.Commands.Profiles.CreateProfile;
 using PasswordManager.Services.Navigation;
 using PasswordManager.Util.MVVM;
 using System;
@@ -11,6 +10,7 @@ namespace PasswordManager.ViewModels {
         private string _profile;
         private string _account;
         private string _password;
+        private INavigationService _navigation;
 
         public string Profile {
             get { return _profile; }
@@ -36,7 +36,8 @@ namespace PasswordManager.ViewModels {
             }
         }
 
-        public CreateProfileViewModel(ISeparatedCommandHandler<CreateProfileCommand> createProfileHandler) {
+        public CreateProfileViewModel(INavigationService navigation, ISeparatedCommandHandler<CreateProfileCommand> createProfileHandler) {
+            _navigation = navigation;
             _createProfileHandler = createProfileHandler;
             SaveCommand = new DelegateCommand(SaveCommandExecuted, SaveCommandCanExecute);
             CancelCommand = new DelegateCommand(CancelCommandExecuted);
@@ -56,7 +57,7 @@ namespace PasswordManager.ViewModels {
             };
             try {
                 _createProfileHandler.Execute(command);
-                NavigationService.GoBack(typeof(MainPageViewModel));
+                CancelCommandExecuted();
             }
             catch (Exception ex) {
                 //Log.Error(ex.Message, ex);
@@ -66,7 +67,7 @@ namespace PasswordManager.ViewModels {
         public DelegateCommand CancelCommand { get; set; }
 
         private void CancelCommandExecuted() {
-            NavigationService.GoBack(typeof(MainPageViewModel));
+            _navigation.GoBack(typeof(MainPageViewModel));
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using PasswordManager.Models.Data.Commands;
-using PasswordManager.Models.Data.Commands.MasterPassword;
 using PasswordManager.Services.Navigation;
 using PasswordManager.Services.Settings;
 using PasswordManager.Util.MVVM;
@@ -28,8 +27,10 @@ namespace PasswordManager.ViewModels {
         }
 
         private ISeparatedCommandHandler<CreateMasterPasswordCommand> _createMasterPasswordHandler;
+        private INavigationService _navigation;
 
-        public MasterPasswordCreateViewModel(ISeparatedCommandHandler<CreateMasterPasswordCommand> createMasterPasswordHandler) {
+        public MasterPasswordCreateViewModel(INavigationService navigation, ISeparatedCommandHandler<CreateMasterPasswordCommand> createMasterPasswordHandler) {
+            _navigation = navigation;
             _createMasterPasswordHandler = createMasterPasswordHandler;
             CreateMasterPasswordCommand = new DelegateCommand(CreateMasterPassword, CreateMasterPasswordCheck);
         }
@@ -49,7 +50,7 @@ namespace PasswordManager.ViewModels {
             try {
                 _createMasterPasswordHandler.Execute(command);
                 AppSettings.MasterPassword = Password;
-                NavigationService.Navigate(typeof(MainPageViewModel));
+                _navigation.Navigate(typeof(MainPageViewModel));
             }
             catch (Exception ex) {
                 AppSettings.MasterPassword = string.Empty;

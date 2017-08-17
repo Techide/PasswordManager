@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PasswordManager.Data.Queries.Profiles.GetProfilesByName {
+namespace PasswordManager.Models.Data.Queries {
     public class GetProfilesByNameQuery : ISeparatedQuery<GetProfilesByNameResult> {
         public string QueryText { get; set; }
     }

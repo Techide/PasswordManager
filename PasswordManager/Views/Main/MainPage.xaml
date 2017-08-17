@@ -2,7 +2,6 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-      xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
       xmlns:interactions="using:Microsoft.Xaml.Interactions.Core"
       xmlns:views="using:PasswordManager.Views"
       xmlns:viewModels="using:PasswordManager.ViewModels"
@@ -19,15 +18,5 @@
             </interactions:EventTriggerBehavior.Actions>
         </interactions:EventTriggerBehavior>
     </interactivity:Interaction.Behaviors>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="32" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <controls:HamburgerMenu HamburgerWidth="32"
-                                HorizontalAlignment="Center">
-        </controls:HamburgerMenu>
-        <views:ProfileListUserControl Grid.Column="1"
-            DataContext="{Binding ProfileListViewModel}" />
-    </Grid>
+    <views:ProfileListUserControl DataContext="{Binding ProfileListViewModel}" />
 </Page>

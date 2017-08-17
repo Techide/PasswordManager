@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PasswordManager.Data.EF.Entities;
-using PasswordManager.Models.Data.EF.Entities;
 
-namespace PasswordManager.Data.EF {
+namespace PasswordManager.Models.Data.EF {
 
     public class PasswordManagerContext : DbContext {
         public DbSet<Profile> Profiles { get; set; }

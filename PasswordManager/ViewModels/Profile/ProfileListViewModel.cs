@@ -1,9 +1,5 @@
-﻿using PasswordManager.Data.Queries;
-using PasswordManager.Data.Queries.Profiles.GetAllProfiles;
-using PasswordManager.Data.Queries.Profiles.GetProfilesByName;
-using PasswordManager.Models.Data.Commands;
-using PasswordManager.Models.Data.Commands.Profiles.DeleteProfile;
-using PasswordManager.Models.Data.Commands.Profiles.LoadProfileDetail;
+﻿using PasswordManager.Models.Data.Commands;
+using PasswordManager.Models.Data.Queries;
 using PasswordManager.Models.DTO;
 using PasswordManager.Services.Navigation;
 using PasswordManager.Util.MVVM;
@@ -24,14 +20,17 @@ namespace PasswordManager.ViewModels {
         private List<ProfileListItemEntity> _profilesCache;
         private ProfileListItemEntity _selectedItem;
         private string _queryText;
+        private INavigationService _navigation;
 
         public ProfileListViewModel(
+            INavigationService navigation,
             ISeparatedQueryHandler<GetAllProfilesQuery, GetAllProfilesResult> getAllProfilesHandler,
             ISeparatedQueryHandler<GetProfilesByNameQuery, GetProfilesByNameResult> getProfilesByNameHandler,
             ISeparatedCommandHandler<LoadProfileDetailsCommand> updateProfileDetailsHandler,
             ISeparatedCommandHandler<DeleteProfileCommand> deleteProfileHandler,
             ProfileDetailViewModel profileDetailViewModel
         ) {
+            _navigation = navigation;
             _getAllProfilesHandler = getAllProfilesHandler;
             _getProfilesByNameHandler = getProfilesByNameHandler;
             _updateProfileDetailsHandler = updateProfileDetailsHandler;
@@ -87,7 +86,7 @@ namespace PasswordManager.ViewModels {
         public DelegateCommand CreateProfileCommand { get; private set; }
 
         private void CreateProfileCommandExecute() {
-            NavigationService.Navigate(typeof(CreateProfileViewModel));
+            _navigation.Navigate(typeof(CreateProfileViewModel));
         }
 
         public DelegateCommand<int> DeleteProfileCommand { get; set; }

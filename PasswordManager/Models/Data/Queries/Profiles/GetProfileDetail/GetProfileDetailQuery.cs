@@ -1,4 +1,4 @@
-﻿namespace PasswordManager.Data.Queries.Profiles.GetProfileDetail {
+﻿namespace PasswordManager.Models.Data.Queries {
 
     public class GetProfileDetailQuery : ISeparatedQuery<GetProfileDetailResult> {
         public string PublicKey { get; set; }

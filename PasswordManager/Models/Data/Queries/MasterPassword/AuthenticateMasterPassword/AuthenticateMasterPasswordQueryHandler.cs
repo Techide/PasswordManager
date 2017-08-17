@@ -1,9 +1,8 @@
-﻿using PasswordManager.Data.EF;
-using PasswordManager.Data.Queries;
+﻿using PasswordManager.Models.Data.EF;
 using PasswordManager.Services.Cryptography;
 using System.Linq;
 
-namespace PasswordManager.Models.Data.Queries.MasterPassword.AuthenticateMasterPassword {
+namespace PasswordManager.Models.Data.Queries {
 
     public class AuthenticateMasterPasswordQueryHandler : ABaseSeparatedQueryHandler<AuthenticateMasterPasswordQuery, AuthenticateMasterPasswordResult> {
 

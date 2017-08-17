@@ -1,11 +1,6 @@
-﻿using PasswordManager.Data.EF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PasswordManager.Models.Data.EF;
 
-namespace PasswordManager.Models.Data.Commands.Profiles.DeleteProfile {
+namespace PasswordManager.Models.Data.Commands {
 
     public class DeleteProfileCommandHandler : ISeparatedCommandHandler<DeleteProfileCommand> {
 

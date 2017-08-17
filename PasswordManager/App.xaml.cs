@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PasswordManager.Data.EF;
+using PasswordManager.Models.Data.EF;
 using PasswordManager.Services.Settings;
 using PasswordManager.Views.MasterPassword;
+using PasswordManager.Views.Navigation;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -35,7 +36,7 @@ namespace PasswordManager {
                 try {
                     var t = db.Settings.FirstOrDefaultAsync(x => x.Name == AppSettings.MASTER_PASSWORD_KEY).Result;
                     if (t == null) {
-                        db.Settings.Add(new Models.Data.EF.Entities.Setting { Name = AppSettings.MASTER_PASSWORD_KEY });
+                        db.Settings.Add(new Setting { Name = AppSettings.MASTER_PASSWORD_KEY });
                         db.SaveChanges();
                     }
                 }
@@ -66,6 +67,7 @@ namespace PasswordManager {
             // just ensure that the window is active
             if (rootFrame == null) {
                 // Create a Frame to act as the navigation context and navigate to the first page
+
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
@@ -86,8 +88,8 @@ namespace PasswordManager {
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MasterPasswordQueryPage), e.Arguments);
-                    //rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    //rootFrame.Navigate(typeof(MasterPasswordQueryPage), e.Arguments);
+                    rootFrame.Navigate(typeof(NavigationMenuPage), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
