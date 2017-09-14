@@ -9,7 +9,7 @@
       d:DesignHeight="300"
       d:DataContext="{d:DesignInstance viewModels:EditProfileViewModel}"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-      DataContext="{Binding EditProfilePage, Source={StaticResource ViewModelLocator}}">
+      DataContext="{Binding EditProfile, Source={StaticResource ViewModelLocator}}">
 
     <Grid Background="{ThemeResource AppBarBackground}"
           Padding="24">

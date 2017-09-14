@@ -9,8 +9,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-      d:DataContext="{d:DesignInstance viewModels:MainPageViewModel}"
-      DataContext="{Binding MainPage, Source={StaticResource ViewModelLocator}}">
+      d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
+      DataContext="{Binding Main, Source={StaticResource ViewModelLocator}}">
     <interactivity:Interaction.Behaviors>
         <interactions:EventTriggerBehavior EventName="Loaded">
             <interactions:EventTriggerBehavior.Actions>

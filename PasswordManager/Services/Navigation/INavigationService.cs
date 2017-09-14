@@ -11,7 +11,7 @@ namespace PasswordManager.Services.Navigation {
 
         void GoBack(Type viewModel);
 
-        dynamic GetParameters(Type viewModel);
+        dynamic GetNavigationArgument(Type viewModel);
 
     }
 }

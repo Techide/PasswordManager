@@ -1,4 +1,4 @@
-﻿<Page x:Class="PasswordManager.Views.Navigation.NavigationMenuPage"
+﻿<Page x:Class="PasswordManager.Views.NavigationMenuPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
@@ -11,12 +11,14 @@
       d:DataContext="{d:DesignInstance model:NavigationMenuViewModel}"
       d:DesignHeight="450"
       d:DesignWidth="300"
+      Background="Transparent"
       mc:Ignorable="d">
 
     <Page.Resources>
+        <x:Double x:Key="HamburgerMenuOpenWidth">200</x:Double>
         <DataTemplate x:Key="MenuItemTemplate"
                       x:DataType="model:MenuItem">
-            <Grid Width="240"
+            <Grid Width="{StaticResource HamburgerMenuOpenWidth}"
                   Height="48">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="48" />
@@ -24,6 +26,8 @@
                 </Grid.ColumnDefinitions>
                 <SymbolIcon Grid.Column="0"
                             Symbol="{x:Bind Icon, Mode=OneWay}"
+                            ToolTipService.ToolTip="{x:Bind Name}"
+                            ToolTipService.Placement="Mouse"
                             Foreground="White" />
                 <TextBlock Grid.Column="1"
                            Text="{x:Bind Name, Mode=OneWay}"
@@ -36,15 +40,25 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <interactivity:Interaction.Behaviors>
+    </interactivity:Interaction.Behaviors>
+
+    <Grid Background="Transparent">
 
         <controls:HamburgerMenu ItemTemplate="{StaticResource MenuItemTemplate}"
                                 ItemsSource="{Binding MenuItems}"
+                                x:Name="menu"
                                 PaneBackground="Transparent"
                                 Foreground="AliceBlue"
-                                OpenPaneLength="240"
-                                CompactPaneLength="0">
+                                DisplayMode="CompactInline"
+                                OpenPaneLength="{StaticResource HamburgerMenuOpenWidth}"
+                                SelectedItem="{Binding LastSelectedMenuItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedIndex="{Binding LastSelectedMenuItemIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                CompactPaneLength="48">
             <interactivity:Interaction.Behaviors>
+                <interactions:EventTriggerBehavior EventName="Loaded">
+                    <interactions:InvokeCommandAction Command="{Binding HamburgerMenuLoadedCommand}"/>
+                </interactions:EventTriggerBehavior>
                 <interactions:EventTriggerBehavior EventName="ItemClick">
                     <interactions:EventTriggerBehavior.Actions>
                         <interactions:InvokeCommandAction Command="{Binding MenuItemClickedCommand}" />
@@ -54,7 +68,10 @@
             <Frame x:Name="NavFrame">
                 <interactivity:Interaction.Behaviors>
                     <interactions:EventTriggerBehavior EventName="Loaded">
-                        
+                        <interactions:EventTriggerBehavior.Actions>
+                            <interactions:InvokeCommandAction Command="{Binding SetContentFrameCommand, Source={StaticResource FrameService}}"
+                                                              CommandParameter="{x:Bind NavFrame}"/>
+                        </interactions:EventTriggerBehavior.Actions>
                     </interactions:EventTriggerBehavior>
                 </interactivity:Interaction.Behaviors>
             </Frame>

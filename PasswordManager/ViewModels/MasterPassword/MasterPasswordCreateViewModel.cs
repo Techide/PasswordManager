@@ -6,7 +6,7 @@ using System;
 
 namespace PasswordManager.ViewModels {
 
-    public class MasterPasswordCreateViewModel : ABindableBase, IViewModel {
+    public class MasterPasswordCreateViewModel : ABindableBase, IRootViewModel, IViewModel {
         private string _password;
         private string _verifyPassword;
 
@@ -50,7 +50,7 @@ namespace PasswordManager.ViewModels {
             try {
                 _createMasterPasswordHandler.Execute(command);
                 AppSettings.MasterPassword = Password;
-                _navigation.Navigate(typeof(MainPageViewModel));
+                _navigation.Navigate(typeof(MainViewModel));
             }
             catch (Exception ex) {
                 AppSettings.MasterPassword = string.Empty;

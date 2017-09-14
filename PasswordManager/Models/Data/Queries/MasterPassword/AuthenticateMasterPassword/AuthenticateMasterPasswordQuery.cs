@@ -2,7 +2,7 @@
 
 namespace PasswordManager.Models.Data.Queries {
 
-    public class AuthenticateMasterPasswordQuery : ISeparatedQuery<AuthenticateMasterPasswordResult> {
+    public class AuthenticateMasterPasswordQuery : ISeparatedQuery<bool> {
 
         public AuthenticateMasterPasswordQuery(string password) {
             Password = password ?? string.Empty;

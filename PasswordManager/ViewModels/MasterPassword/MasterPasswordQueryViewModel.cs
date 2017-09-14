@@ -7,13 +7,13 @@ using PasswordManager.Models.Data.Queries;
 
 namespace PasswordManager.ViewModels {
 
-    public class MasterPasswordQueryViewModel : ABindableBase, IViewModel {
-        private readonly ISeparatedQueryHandler<AuthenticateMasterPasswordQuery, AuthenticateMasterPasswordResult> _authenticateHandler;
+    public class MasterPasswordQueryViewModel : ABindableBase, IRootViewModel, IViewModel {
+        private readonly ISeparatedQueryHandler<AuthenticateMasterPasswordQuery, bool> _authenticateHandler;
         private NavigationService _navigation;
 
         public string Password { get; set; }
 
-        public MasterPasswordQueryViewModel(NavigationService navigation, ISeparatedQueryHandler<AuthenticateMasterPasswordQuery, AuthenticateMasterPasswordResult> authenticateHandler) {
+        public MasterPasswordQueryViewModel(NavigationService navigation, ISeparatedQueryHandler<AuthenticateMasterPasswordQuery, bool> authenticateHandler) {
             _navigation = navigation;
             Password = string.Empty;
             _authenticateHandler = authenticateHandler;
@@ -21,21 +21,22 @@ namespace PasswordManager.ViewModels {
         }
 
         private bool PasswordBoxKeyDownCommandCanExecute(object obj) {
-            var data = obj as KeyRoutedEventArgs;
-            if (data != null) {
-                return data.Key == VirtualKey.Enter;
+            var keyEvent = obj as KeyRoutedEventArgs;
+
+            if (obj == null) {
+                return false;
+            }
+
+            if (keyEvent != null) {
+                return keyEvent.Key == VirtualKey.Enter;
             }
             return false;
         }
 
         private void PasswordBoxKeyDownCommandExecute() {
-            AuthenticateMasterPassword();
-        }
-
-        private void AuthenticateMasterPassword() {
-            if (_authenticateHandler.Execute(new AuthenticateMasterPasswordQuery(Password)).Authenticated) {
+            if (_authenticateHandler.Execute(new AuthenticateMasterPasswordQuery(Password))) {
                 AppSettings.MasterPassword = Password;
-                _navigation.Navigate(typeof(MainPageViewModel));
+                _navigation.Navigate(typeof(NavigationMenuViewModel));
             }
         }
 

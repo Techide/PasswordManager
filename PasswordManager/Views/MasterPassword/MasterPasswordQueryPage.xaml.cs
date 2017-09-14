@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Xaml.Controls;
 
-namespace PasswordManager.Views.MasterPassword {
+namespace PasswordManager.Views {
 
     public sealed partial class MasterPasswordQueryPage : Page {
 

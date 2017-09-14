@@ -67,7 +67,7 @@ namespace PasswordManager.ViewModels {
         public DelegateCommand CancelCommand { get; set; }
 
         private void CancelCommandExecuted() {
-            _navigation.GoBack(typeof(MainPageViewModel));
+            _navigation.GoBack(typeof(MainViewModel));
         }
     }
 }

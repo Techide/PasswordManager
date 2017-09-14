@@ -47,7 +47,7 @@ namespace PasswordManager.ViewModels {
             UpdateCommand = new DelegateCommand(UpdateCommand_Execute, UpdateCommand_CanExecute);
             CancelCommand = new DelegateCommand(CancelCommand_Execute);
 
-            _dto = _navigation.GetParameters(GetType()) as ProfileDTO;
+            _dto = _navigation.GetNavigationArgument(GetType()) as ProfileDTO;
             _id = _dto.ID;
             _profile = _dto.Profile;
             _account = _dto.Account;
@@ -73,7 +73,7 @@ namespace PasswordManager.ViewModels {
                     Password = _password
                 };
                 _updateProfileHandler.Execute(command);
-                _navigation.Navigate(typeof(MainPageViewModel), _id);
+                _navigation.Navigate(typeof(MainViewModel), _id);
             }
             catch (Exception ex) {
                 //Log.Error(string.Format("Failed to update profile details {0}", _profile), ex);
@@ -83,7 +83,7 @@ namespace PasswordManager.ViewModels {
         public DelegateCommand CancelCommand { get; set; }
 
         private void CancelCommand_Execute() {
-            _navigation.GoBack(typeof(MainPageViewModel));
+            _navigation.GoBack(typeof(MainViewModel));
         }
     }
 }
